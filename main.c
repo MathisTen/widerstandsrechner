@@ -29,7 +29,7 @@ int checkRing(int count,int number, char colour[]);
 int colourvalue(char colour[]);
 
 //Wandelt bis zu sechs gegebene Wörter in die zugehörigen Ziffern um
-void resistorDigits(int count, char input[], int ringvalues[]);
+int* resistorDigits(int count, char input[]);
 
 //berechnet aus gegebenen Zahlen den Widerstandswert
 int widerstandswert(int count, int wert1, int wert2, int wert3, int wert4);
@@ -69,6 +69,7 @@ int main() {
     }
 
     //Schreiben der Zahlen je nach Farbwort
+    
 
     //resistorDigits(count, colour1, colour2, colour3, colour4, colour5, colour6, &ring1, &ring2, &ring3, &ring4, &ring5, &ring6);
 
@@ -351,8 +352,10 @@ int checkRing(int count, int number, char colour[]) {
 
 }
 
-void resistorDigits(int count, char input[], int ringvalues[])
+int* resistorDigits(int count, char input[])
 {
+    
+    int* ringvalues = malloc(count * sizeof(int));
     //Die ersten drei Ringe sind immer vorhanden, die jeweiligen Farbwerte werden mit Colourvalue zugeordnet
     ringvalues[0] = colourvalue(&input[0]);
     ringvalues[1] = colourvalue(&input[8]);
