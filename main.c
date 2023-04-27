@@ -6,6 +6,7 @@
 #include <stdarg.h>
 #define DEBUG
 
+
 //Benutzeraufforderung zur Eingabe des Farb-String und speichert in input[], gibt die Anzahl der Wörter zurück
 int getInput(char input[]);
 
@@ -61,9 +62,14 @@ int main() {
    
     //Prüfen der Logik der jeweiligen Ringe
 
-
+    if(!checkResistorLogic(input, count)) 
+    {
+        printf("Bitte geben sie einen korrekten Widerstand ein\n");
+        count = getInput(input);
+    }
 
     //Schreiben der Zahlen je nach Farbwort
+
     //resistorDigits(count, colour1, colour2, colour3, colour4, colour5, colour6, &ring1, &ring2, &ring3, &ring4, &ring5, &ring6);
 
 
@@ -92,6 +98,8 @@ int main() {
     return 0;
 
 }
+
+
 
 int getInput(char input[]) {
 
@@ -299,8 +307,39 @@ int colourvalue(char colour[])
 
 int checkResistorLogic(char input[], int count)
 {
-    switch (count) {
-        
+    //test the first ring on logic
+    if(checkRing(count, 1, &input[0]))
+    {
+        //test the second ring on logic
+        if(checkRing(count, 2, &input[8]))
+        {  
+            //test the third ring on logic
+            if(checkRing(count, 3, &input[16]))
+            {
+                //If more than three rings
+                if(count >3)
+                {
+                    //check the fourth ring on logic
+                    if(checkRing(count, 4, &input[24]))
+                    {
+                        //If more than four rings 
+                        if(count >4)
+                        {   
+                            //check the fifth ring on logic
+                            if(checkRing(count, 5, &input[32]))
+                            {
+                                //If more than five rings
+                                if(count>5)
+                                {
+                                    //check the sixth ring on logic
+                                    if(checkRing(count, 6, &input[40]))return true;
+                                }else return true;
+                            }
+                        }else return true;
+                    }
+                }else return true;
+            }
+        }
     }
     return 0;
 }
@@ -311,7 +350,6 @@ int checkRing(int count, int number, char colour[]) {
     return 1;
 
 }
-
 
 void resistorDigits(int count, char colour1[], char colour2[], char colour3[], char colour4[], char colour5[], char colour6[], int* ring1, int* ring2, int* ring3, int* ring4, int* ring5, int* ring6)
 {
