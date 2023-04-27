@@ -184,9 +184,10 @@ int validate_input(char input[]) {
         token = strtok(NULL, "-");
     }
 
-    if(count < 4) { //Ungültig, wenn unter vier Farben
+    if(count < 3) { //Ungültig, wenn unter drei Farben
 #ifdef DEBUG
         printf("Zu wenige Farben\n");
+        printf("Anzahl Farben: %i\n", count);
 #endif
         return false;
     }
