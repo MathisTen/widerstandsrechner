@@ -43,13 +43,7 @@ int main() {
 
     //Deklarieren der Variablen für den Input und die Farbwörter
     char input[48] = "";
-    char colour1[8] = "";
-    char colour2[8] = "";
-    char colour3[8] = "";
-    char colour4[8] = "";
-    char colour5[8] = "";
-    char colour6[8] = "";
-
+    
     //Variable für die Anzahl der Wörter im eingegebenen String
     int count = 0;
 
@@ -59,29 +53,21 @@ int main() {
     //syntaktisch korrekte Eingabe abfragen und in input speichern
     count = getInput(input);
 
-    //Hier haben wir in input "schwarz-rot-gelb-gruen" und die Anzahl der Wörter in count
-
     //Sortieren des Inputs, sodass jedes neue Wort an einer definierten Position beginnt
     sortInput(input, count);
    
-    //Prüfen der Logik der jeweiligen Ringe
-
-    printf("Sorted.\n");
-
+    //Prüfen der Logik der jeweiligen Ringe une erneute Eingabeaufforderung, wenn falsch
     if(!checkResistorLogic(input, count)) 
     {
         printf("Bitte geben sie einen korrekten Widerstand ein\n");
         count = getInput(input);
     }
 
-    printf("Logic tested.\n");
-
     //Ausgabe des Widerstandswertes 
     int resistorValue = calcResistorValue(count, input);
     printf("Resistor Value: %i\n", resistorValue);
     
     return 0;
-
 }
 
 
