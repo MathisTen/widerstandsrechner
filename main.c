@@ -29,7 +29,7 @@ int checkRing(int count,int number, char colour[]);
 int colourvalue(char colour[]);
 
 //Wandelt bis zu sechs gegebene Wörter in die zugehörigen Ziffern um
-void resistorDigits(int count, char colour1[], char colour2[], char colour3[], char colour4[], char colour5[], char colour6[], int* ring1, int* ring2, int* ring3, int* ring4, int* ring5, int* ring6);
+void resistorDigits(int count, char input[], int ringvalues[]);
 
 //berechnet aus gegebenen Zahlen den Widerstandswert
 int widerstandswert(int count, int wert1, int wert2, int wert3, int wert4);
@@ -351,26 +351,26 @@ int checkRing(int count, int number, char colour[]) {
 
 }
 
-void resistorDigits(int count, char colour1[], char colour2[], char colour3[], char colour4[], char colour5[], char colour6[], int* ring1, int* ring2, int* ring3, int* ring4, int* ring5, int* ring6)
+void resistorDigits(int count, char input[], int ringvalues[])
 {
     //Die ersten drei Ringe sind immer vorhanden, die jeweiligen Farbwerte werden mit Colourvalue zugeordnet
-    *ring1 = colourvalue(colour1);
-    *ring2 = colourvalue(colour2);
-    *ring3 = colourvalue(colour3);
+    ringvalues[0] = colourvalue(&input[0]);
+    ringvalues[1] = colourvalue(&input[8]);
+    ringvalues[2] = colourvalue(&input[16]);
 
     //Je nach Anzahl der Ringe werden die Ringe 4-6 auch in Zahlen übersetzt
     switch (count) {
         case 4:
-            *ring4 = colourvalue(colour4);
+            ringvalues[3] = colourvalue(&input[24]);
             break;
         case 5:
-            *ring4 = colourvalue(colour4);
-            *ring5 = colourvalue(colour5);
+            ringvalues[3] = colourvalue(&input[24]);
+            ringvalues[4] = colourvalue(&input[32]);
             break;
         case 6:
-            *ring4 = colourvalue(colour4);
-            *ring5 = colourvalue(colour5);
-            *ring6 = colourvalue(colour6);
+            ringvalues[3] = colourvalue(&input[24]);
+            ringvalues[4] = colourvalue(&input[32]);
+            ringvalues[5] = colourvalue(&input[40]);
             break;
     }
 }
