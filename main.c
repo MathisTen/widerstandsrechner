@@ -56,21 +56,9 @@ int main() {
 
     //Hier haben wir in input "schwarz-rot-gelb-gruen" und die Anzahl der Wörter in count
 
-    //Trennen der Inhalte aus input in color1 bis color6
-    //separate(input, count, colour1, colour2, colour3, colour4, colour5, colour6);
-
     //Sortieren des Inputs, sodass jedes neue Wort an einer definierten Position beginnt
-    printf("Sortieren\n");
     sortInput(input, count);
-    for(int i = 0; i <48; i++) {
-        printf("Nummer %i: %c\n", i, input[i]);
-    }
-    printf("Sorted Input 1: %s\n", &input[0]);
-    printf("Sorted Input 2: %s\n", &input[8]);
-    printf("Sorted Input 3: %s\n", &input[16]);
-    printf("Sorted Input 4: %s\n", &input[24]);
-    printf("Sorted Input 5: %s\n", &input[32]);
-    printf("Sorted Input 6: %s\n", &input[40]);
+   
     //Prüfen der Logik der jeweiligen Ringe
 
 
@@ -104,6 +92,7 @@ int main() {
     return 0;
 
 }
+
 int getInput(char input[]) {
 
     int count;
@@ -289,7 +278,6 @@ void separate(char input[],int count, char colour1[], char colour2[], char colou
     }
 }
 
-
 int colourvalue(char colour[])
 {
     //Ändern in zweidimensionales Array !!!
@@ -309,6 +297,13 @@ int colourvalue(char colour[])
     return 100;
 }
 
+int checkResistorLogic(char input[], int count)
+{
+    switch (count) {
+        
+    }
+    return 0;
+}
 
 int checkRing(int count, int number, char colour[]) {
 
