@@ -57,7 +57,7 @@ int main() {
     //Hier haben wir in input "schwarz-rot-gelb-gruen" und die Anzahl der Wörter in count
 
     //Trennen der Inhalte aus input in color1 bis color6
-    separate(input, count, colour1, colour2, colour3, colour4, colour5, colour6);
+    //separate(input, count, colour1, colour2, colour3, colour4, colour5, colour6);
 
     //Sortieren des Inputs, sodass jedes neue Wort an einer definierten Position beginnt
     printf("Sortieren\n");
@@ -65,20 +65,24 @@ int main() {
     for(int i = 0; i <48; i++) {
         printf("Nummer %i: %c\n", i, input[i]);
     }
-    printf("Sorted Input: %s\n", input);
-
+    printf("Sorted Input 1: %s\n", &input[0]);
+    printf("Sorted Input 2: %s\n", &input[8]);
+    printf("Sorted Input 3: %s\n", &input[16]);
+    printf("Sorted Input 4: %s\n", &input[24]);
+    printf("Sorted Input 5: %s\n", &input[32]);
+    printf("Sorted Input 6: %s\n", &input[40]);
     //Prüfen der Logik der jeweiligen Ringe
 
 
 
     //Schreiben der Zahlen je nach Farbwort
-    resistorDigits(count, colour1, colour2, colour3, colour4, colour5, colour6, &ring1, &ring2, &ring3, &ring4, &ring5, &ring6);
+    //resistorDigits(count, colour1, colour2, colour3, colour4, colour5, colour6, &ring1, &ring2, &ring3, &ring4, &ring5, &ring6);
 
 
 
     //Berechnen des Widerstandswertes mit den
 
-
+    /*
     printf("Farbe 1: %s\n", colour1);
     printf("Farbe 2: %s\n", colour2);
     printf("Farbe 3: %s\n", colour3);
@@ -206,7 +210,7 @@ void sortInput(char input[], int count) {
     char colour6[8] = "";
 
     separate(input, count, colour1, colour2, colour3, colour4, colour5, colour6);
-
+    printf("Separated in sort\n");
     strcpy(input, colour1);
     strcpy(&input[8], colour2);
     strcpy(&input[16], colour3);
