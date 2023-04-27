@@ -222,8 +222,6 @@ void sortInput(char input[], int count) {
             strcpy(&input[32], colour5);
             strcpy(&input[40], colour6);
             break;
-        default:
-
     }
 
 
@@ -282,7 +280,6 @@ void separate(char input[],int count, char colour1[], char colour2[], char colou
             printf("Separate\n");
 
             break;
-        default:
 
     }
 }
@@ -337,7 +334,6 @@ void resistorDigits(int count, char colour1[], char colour2[], char colour3[], c
             *ring5 = colourvalue(colour5);
             *ring6 = colourvalue(colour6);
             break;
-        default:
     }
 }
 
@@ -352,6 +348,5 @@ int widerstandswert(int count, int wert1, int wert2, int wert3, int wert4) {
         case 6:
             return (wert1*100 + wert2*10 + wert3*1)*pow(10, wert4);
             break;
-        default:
     }
 }
