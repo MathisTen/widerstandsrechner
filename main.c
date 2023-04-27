@@ -39,7 +39,7 @@ int* resistorDigits(int count, char input[]);
 int calcResistorValue(int count, char input[]);
 
 //gibt aus dem gegebenen Ring die Toleranz des Widerstands zurück
-int toleranceValue(char input[]);
+float toleranceValue(char colour[]);
 
 
 int main() {
@@ -405,7 +405,37 @@ int calcResistorValue(int count, char input[]) {
     }
 }
 
-int toleranceValue(char input[])
+float toleranceValue(char colour[])
 {
+    int tolerance = colourValue(colour);
+    switch(tolerance) 
+    {
+        case -10:
+            return 5;
+            break;
+        case -1:
+            return 10;
+            break;
+        case 1:
+            return 1;
+            break;
+        case 2:
+            return 2;
+            break;
+        case 5:
+            return 0.5;
+            break;
+        case 6:
+            return 0.25;
+            break;
+        case 7:
+            return 0.1;
+            break;
+        case 8:
+            return 0.05;
+            break;
+        default:
+            break;
+    }
     return 1;
 }
