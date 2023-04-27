@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include <stdbool.h>
@@ -13,8 +14,8 @@ int getInput(char input[]);
 //Wandelt alle Benutzereingaben in Kleinbuchstaben um
 void stringToLower(char s[]);
 
-//Prüft den eingegeben String auf die korrekte Syntax und gibt als Rückgabewert die Anzahl der Farbwörter zurück, gibt "" zurück, wenn der String nicht korrekt ist
-int validate_input(char input_string[]);
+//Prüft den eingegeben String auf die korrekte Syntax und gibt als Rückgabewert die Anzahl der Farbwörter zurück, gibt "FALSE" zurück, wenn der String nicht korrekt ist
+int validateInput(char input_string[]);
 
 //Sorts the input, so that every new Word is exactly at pos 8*colournumber
 void sortInput(char input[], int count);
@@ -22,17 +23,20 @@ void sortInput(char input[], int count);
 //Splittet den Eingabestring um, die verschiedenen Farben werden in die einzelnen Variablen gespeichert
 void separate(char input[], int count, char colour1[], char colour2[], char colour3[], char colour4[], char colour5[], char colour6[]);
 
+//Gibt den Zahlenwert einer Farbe zurück
+int colourValue(char colour[]);
+
+//Prüft, ob alle eingegebenen Farben an der jeweiligen Stelle möglich sind
+int checkResistorLogic(char input[], int count);
+
 //Prüft je nach Ringnummer, ob die Farbe an dieser Position zulässig ist
 int checkRing(int count,int number, char colour[]);
-
-//Gibt den Zahlenwert einer Farbe zurück
-int colourvalue(char colour[]);
 
 //Wandelt bis zu sechs gegebene Wörter in die zugehörigen Ziffern um
 int* resistorDigits(int count, char input[]);
 
 //berechnet aus gegebenen Zahlen den Widerstandswert
-int widerstandswert(int count, int wert1, int wert2, int wert3, int wert4);
+int calcResistorValue(int count, char input[]);
 
 
 int main() {
@@ -62,40 +66,20 @@ int main() {
    
     //Prüfen der Logik der jeweiligen Ringe
 
+    printf("Sorted.\n");
+
     if(!checkResistorLogic(input, count)) 
     {
         printf("Bitte geben sie einen korrekten Widerstand ein\n");
         count = getInput(input);
     }
 
-    //Schreiben der Zahlen je nach Farbwort
+    printf("Logic tested.\n");
+
+    //Ausgabe des Widerstandswertes 
+    int resistorValue = calcResistorValue(count, input);
+    printf("Resistor Value: %i\n", resistorValue);
     
-
-    //resistorDigits(count, colour1, colour2, colour3, colour4, colour5, colour6, &ring1, &ring2, &ring3, &ring4, &ring5, &ring6);
-
-
-
-    //Berechnen des Widerstandswertes mit den
-
-    /*
-    printf("Farbe 1: %s\n", colour1);
-    printf("Farbe 2: %s\n", colour2);
-    printf("Farbe 3: %s\n", colour3);
-    printf("Farbe 4: %s\n", colour4);
-    printf("Farbe 5: %s\n", colour5);
-    printf("Farbe 6: %s\n", colour6);
-    /*
-    printf("Farbwert 1: %i\n", colourvalue(colour1));
-    printf("Farbwert 2: %i\n", colourvalue(colour2));
-    printf("Farbwert 3: %i\n", colourvalue(colour3));
-    printf("Farbwert 4: %i\n", colourvalue(colour4));
-    printf("Farbwert 5: %i\n", colourvalue(colour5));
-    printf("Farbwert 6: %i\n", colourvalue(colour6));
-    printf("Wert: %i\n", widerstandswert(count, colourvalue(colour1), colourvalue(colour2), colourvalue(colour3), colourvalue(colour4)));
-
-    int widerstand = (wert1 * 100 + wert2 * 10 + wert3 * 1)* pow(10, wert4);
-    printf("Widerstand: %i Ohm\n", widerstand);
-    */
     return 0;
 
 }
@@ -121,7 +105,7 @@ int getInput(char input[]) {
         stringToLower(input);
 
         //Prüfen auf syntaktische Korrektheit und Zählen der Farben (0 = Fehler, 3-6 = Anzahl der eingegebenen Farbringe
-        count = validate_input(input);
+        count = validateInput(input);
 
         //Wenn fehlerhafte Eingabe, Aufforderung zur Korrektur ausgeben
         if(count == 0) printf("Ihre Eingabe ist Fehlerhaft, bitte erneut eingeben.\n");
@@ -138,7 +122,7 @@ void stringToLower(char s[]) {
     }
 }
 
-int validate_input(char input[]) {
+int validateInput(char input[]) {
 
     char *token;
     char tmpInput[48];
@@ -170,27 +154,28 @@ int validate_input(char input[]) {
            strcmp(token, "grau") == 0 || strcmp(token, "grey") == 0 || strcmp(token, "gy") == 0 ||
            strcmp(token, "weiss") == 0 || strcmp(token, "white") == 0 || strcmp(token, "wh") == 0 ||
            strcmp(token, "silber") == 0 || strcmp(token, "silver") == 0 || strcmp(token, "ag") == 0 ||
-           strcmp(token, "gold") == 0 || strcmp(token, "au") == 0 ) {
+           strcmp(token, "gold") == 0 || strcmp(token, "au") == 0 )
+        {
             // Farbe ist gültig
-#ifdef DEBUG
-            printf("Farbe gültig\n");
-#endif
+            #ifdef DEBUG
+                printf("Farbe gültig\n");
+            #endif
         } else {
             // Farbe ist ungültig
-#ifdef DEBUG
-            printf("Token: %s\n", token);
-            printf("Farbe ungültig\n");
-#endif
+            #ifdef DEBUG
+                printf("Token: %s\n", token);
+                printf("Farbe ungültig\n");
+            #endif
             return false;
         }
         token = strtok(NULL, "-");
     }
 
     if(count < 3) { //Ungültig, wenn unter drei Farben
-#ifdef DEBUG
-        printf("Zu wenige Farben\n");
-        printf("Anzahl Farben: %i\n", count);
-#endif
+        #ifdef DEBUG
+            printf("Zu wenige Farben\n");
+            printf("Anzahl Farben: %i\n", count);
+        #endif
         return false;
     }
     printf("Anzahl: %i\n", count);
@@ -208,7 +193,9 @@ void sortInput(char input[], int count) {
     char colour6[8] = "";
 
     separate(input, count, colour1, colour2, colour3, colour4, colour5, colour6);
-    printf("Separated in sort\n");
+    #ifdef DEBUG
+        printf("Separated in sort\n");
+    #endif
     strcpy(input, colour1);
     strcpy(&input[8], colour2);
     strcpy(&input[16], colour3);
@@ -239,32 +226,43 @@ void separate(char input[],int count, char colour1[], char colour2[], char colou
 
     token = strtok(input, "-");
     strcpy(colour1, token);
-    printf("Separate\n");
-
+    #ifdef DEBUG
+        printf("Separate\n");
+    #endif
     token = strtok(NULL, "-");
     strcpy(colour2, token);
-    printf("Separate\n");
+    #ifdef DEBUG
+        printf("Separate\n");
+    #endif
 
     token = strtok(NULL, "-");
     strcpy(colour3, token);
-    printf("Separate\n");
+    #ifdef DEBUG
+        printf("Separate\n");
+    #endif
 
 
     switch (count) {
         case 4:
             token = strtok(NULL, "-");
             strcpy(colour4, token);
-            printf("Separate\n");
+            #ifdef DEBUG
+                printf("Separate\n");
+            #endif
             break;
         case 5:
 
             token = strtok(NULL, "-");
             strcpy(colour4, token);
+            #ifdef DEBUG
             printf("Separate\n");
+            #endif
 
             token = strtok(NULL, "-");
             strcpy(colour5, token);
-            printf("Separate\n");
+            #ifdef DEBUG
+                printf("Separate\n");
+            #endif
 
             break;
 
@@ -272,22 +270,28 @@ void separate(char input[],int count, char colour1[], char colour2[], char colou
 
             token = strtok(NULL, "-");
             strcpy(colour4, token);
-            printf("Separate\n");
+            #ifdef DEBUG
+                printf("Separate\n");
+            #endif
 
             token = strtok(NULL, "-");
             strcpy(colour5, token);
-            printf("Separate\n");
+            #ifdef DEBUG
+                printf("Separate\n");
+            #endif
 
             token = strtok(NULL, "-");
             strcpy(colour6, token);
-            printf("Separate\n");
+            #ifdef DEBUG
+                printf("Separate\n");
+            #endif
 
             break;
 
     }
 }
 
-int colourvalue(char colour[])
+int colourValue(char colour[])
 {
     //Ändern in zweidimensionales Array !!!
     //ISO Norm für Farbabkürzungen
@@ -357,37 +361,57 @@ int* resistorDigits(int count, char input[])
     
     int* ringvalues = malloc(count * sizeof(int));
     //Die ersten drei Ringe sind immer vorhanden, die jeweiligen Farbwerte werden mit Colourvalue zugeordnet
-    ringvalues[0] = colourvalue(&input[0]);
-    ringvalues[1] = colourvalue(&input[8]);
-    ringvalues[2] = colourvalue(&input[16]);
+    ringvalues[0] = colourValue(&input[0]);
+    ringvalues[1] = colourValue(&input[8]);
+    ringvalues[2] = colourValue(&input[16]);
 
     //Je nach Anzahl der Ringe werden die Ringe 4-6 auch in Zahlen übersetzt
     switch (count) {
         case 4:
-            ringvalues[3] = colourvalue(&input[24]);
+            ringvalues[3] = colourValue(&input[24]);
             break;
         case 5:
-            ringvalues[3] = colourvalue(&input[24]);
-            ringvalues[4] = colourvalue(&input[32]);
+            ringvalues[3] = colourValue(&input[24]);
+            ringvalues[4] = colourValue(&input[32]);
             break;
         case 6:
-            ringvalues[3] = colourvalue(&input[24]);
-            ringvalues[4] = colourvalue(&input[32]);
-            ringvalues[5] = colourvalue(&input[40]);
+            ringvalues[3] = colourValue(&input[24]);
+            ringvalues[4] = colourValue(&input[32]);
+            ringvalues[5] = colourValue(&input[40]);
             break;
     }
+    return ringvalues;
 }
 
-int widerstandswert(int count, int wert1, int wert2, int wert3, int wert4) {
+int calcResistorValue(int count, char input[]) {
 
+    #ifdef DEBUG
+        printf("Calculating...\n");
+    #endif
+    int* values = resistorDigits(count, input);
+
+    #ifdef DEBUG
+        printf("Calculating 2...\n");
+        for(int i = 0; i<count;i++) {
+            printf("Value %i: %i\n", i, values[i]);
+        }
+    #endif
+    double multiplicator;
     switch (count) {
         case 3:
+            printf("Case 3\n");
         case 4:
-            return (wert1*10+wert2*1)*pow(10,wert3);
+            printf("Case 4\n");
+            multiplicator = pow(10, (double)values[2]);
+            return (values[0]*10+values[1]*1)*(int)multiplicator;
             break;
         case 5:
         case 6:
-            return (wert1*100 + wert2*10 + wert3*1)*pow(10, wert4);
+            multiplicator = pow(10, (double)values[3]);
+            return (values[0]*100 + values[1]*10 + values[2]*1)*multiplicator;
+            break;
+        default:
+            return 0;
             break;
     }
 }
