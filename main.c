@@ -38,6 +38,9 @@ int* resistorDigits(int count, char input[]);
 //berechnet aus gegebenen Zahlen den Widerstandswert
 int calcResistorValue(int count, char input[]);
 
+//gibt aus dem gegebenen Ring die Toleranz des Widerstands zurück
+int toleranceValue(char input[]);
+
 
 int main() {
 
@@ -400,4 +403,9 @@ int calcResistorValue(int count, char input[]) {
             return 0;
             break;
     }
+}
+
+int toleranceValue(char input[])
+{
+    return 1;
 }
