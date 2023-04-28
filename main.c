@@ -365,7 +365,10 @@ int checkRing(int count, int number, char colour[]) {
         case 4:
         // test für Ring 4
         break;
+<<<<<<< HEAD
         }
+=======
+>>>>>>> b29a44f (Erste Änderungen an checkRing)
         
     }else if(count == 5 || count == 6 )
     {
