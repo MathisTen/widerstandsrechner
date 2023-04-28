@@ -70,6 +70,9 @@ int main() {
     int resistorValue = calcResistorValue(count, input);
     printf("Resistor Value: %i\n", resistorValue);
     
+    //Testkommentar
+    printf("Hallo Marvin\n");
+
     return 0;
 }
 
