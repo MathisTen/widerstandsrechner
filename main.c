@@ -344,6 +344,42 @@ int checkResistorLogic(char input[], int count)
 int checkRing(int count, int number, char colour[]) {
 
     //Holger
+    if ( count == 3 || count == 4 )
+    { 
+        switch( number)
+        {
+        case 1: 
+        case 2:
+            //test für ring 1 und 2
+            break;
+        case 3:
+            // test für Ring 3
+            break;
+        case 4:
+        // test für Ring 4
+        break;
+        
+    }else if(count == 5 || count == 6 )
+    {
+        switch (number)
+        { case 1:
+          case 2:
+          case 3:
+            // test für ring 1,2,3)
+            break;
+         case 4:
+            // test ring 4
+            break;
+         case 5:
+         // test für ring 5
+         break;
+         case 6:
+         // test für ring 6
+         break;
+        }
+    
+    }
+    
     return 1;
 
 }
