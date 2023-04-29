@@ -109,6 +109,7 @@ int getInput(char input[]) {
         //Eingabeabfrage wiederholen, wenn Eingabe fehlerhaft
     }while(count == 0);
 
+    return count;
 }
 
 void stringToLower(char s[]) {
