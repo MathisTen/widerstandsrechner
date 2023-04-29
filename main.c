@@ -41,6 +41,7 @@ int calcResistorValue(int count, char input[]);
 //gibt aus dem gegebenen Ring die Toleranz des Widerstands zurück
 float toleranceValue(char colour[]);
 
+char language[] = "de"; 
 
 int main() {
 
@@ -53,6 +54,7 @@ int main() {
     //Variablen für die Farbwerte
     int ring1, ring2, ring3, ring4, ring5, ring6;
 
+    
     //syntaktisch korrekte Eingabe abfragen und in input speichern
     count = getInput(input);
 
@@ -62,13 +64,17 @@ int main() {
     //Prüfen der Logik der jeweiligen Ringe une erneute Eingabeaufforderung, wenn falsch
     if(!checkResistorLogic(input, count)) 
     {
-        printf("Bitte geben sie einen korrekten Widerstand ein\n");
+        if(strcmp(language, "de"))printf("Bitte geben sie einen korrekten Widerstand ein.\n");
+        else printf("Please enter a correct resistor.\n");
         count = getInput(input);
     }
 
     //Ausgabe des Widerstandswertes 
     int resistorValue = calcResistorValue(count, input);
-    printf("Resistor Value: %i\n", resistorValue);
+    if(strcmp(language, "de"))printf("Widerstandswert:");
+    else printf("Resistor Value:");
+    printf("%i\n", resistorValue);
+
     
     return 0;
 }
@@ -80,7 +86,8 @@ int getInput(char input[]) {
     int count;
 
     //Aufforderung zur Eingabe
-    printf("Bitte geben Sie den Eingabestring ein: ");
+    if(strcmp(language, "de"))printf("Bitte geben Sie den Eingabestring ein: ");
+    else printf("Please enter your input-string: ");
 
     //Eingabe abfragen
     do {
@@ -122,13 +129,13 @@ int validateInput(char input[]) {
     token = strtok(tmpInput, "-");
     while(token != NULL) {
         #ifdef DEBUG
-        printf("Durchlauf nummer: %i\n", count);
+            printf("Durchlauf nummer: %i\n", count);
         #endif
         count++;
         if(count > 6) { //Ungültig, wenn über sechs Farben
-        #ifdef DEBUG
-            printf("Zu viele\n");
-        #endif
+            #ifdef DEBUG
+                printf("Zu viele\n");
+            #endif
             return false;
         }
 
@@ -167,7 +174,9 @@ int validateInput(char input[]) {
         #endif
         return false;
     }
-    printf("Anzahl: %i\n", count);
+    #ifdef DEBUG
+        printf("Anzahl: %i\n", count);
+    #endif
     return count;
 }
 
