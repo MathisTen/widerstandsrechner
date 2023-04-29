@@ -14,6 +14,12 @@ int getInput(char input[]);
 //Wandelt alle Benutzereingaben in Kleinbuchstaben um
 void stringToLower(char s[]);
 
+//Prüft, ob die Eingabe eine Einstellung ist
+int checkForSetting(char input[]);
+
+//Wendet die Einstellung an
+int applySetting(char input[]);
+
 //Prüft den eingegeben String auf die korrekte Syntax und gibt als Rückgabewert die Anzahl der Farbwörter zurück, gibt "FALSE" zurück, wenn der String nicht korrekt ist
 int validateInput(char input_string[]);
 
@@ -82,7 +88,7 @@ int main() {
 
 int getInput(char input[]) {
 
-    int count;
+    int count = 0;
 
     //Aufforderung zur Eingabe
     if(strcmp(language, "de")==0)printf("Bitte geben Sie den Eingabestring ein: ");
@@ -99,54 +105,26 @@ int getInput(char input[]) {
         // Alle Wörter zu Kleinbuchstaben
         stringToLower(input);
 
-        //Wenn String mit "-" beginnt -> Einstellung ändern
-        if(input[0] == '-') 
+        count = 0;
+
+        //Wenn Eingabe ist Einstellung -> Einstellung ändern
+        if(checkForSetting(input)) 
         {
-            bool setChanged = 0;
             //Einstellungen ändern ...
-            //nach "-" muss die einstellung folgen, d.h. len
-            if(input[1] == 'l' && input[2] == 'e' && input[3] == 'n')
-            {
-                if(input[5] == 'd' && input[6] == 'e')
+            if(applySetting(input))
+            {                
+                //Gültige Einstellung
+                if(strcmp(language, "de")==0)
                 {
-                    //Sprache in Deutsch geändert
-                    strcpy(language, "de");
-                    printf("Sprachauswahl: Deutsch.\n");
-                    setChanged = 1;
-                }else if (input[5] == 'e' && input[6] == 'n')
-                {
-                    //Sprache in Englisch geändert
-                    strcpy(language, "en");
-                    printf("Language: english\n");
-                    setChanged = 1;
-                }
-                if(setChanged)
-                {
-                    //Gültige Spracheinstellung
-                    if(strcmp(language, "de")==0)
-                    {
-                        printf("Einstellungen geändert.\n");
-                        printf("Bitte geben Sie einen Eingabestring ein: ");
-                    }else
-                    {
-                        printf("Settings changed.\n");
-                        printf("Please enter an input-string: ");
-                    }
+                    printf("Einstellungen geändert.\n");
+                    printf("Bitte geben Sie einen Eingabestring ein: ");
                 }else
                 {
-                    //Keine gültige Sprache
-                    if(strcmp(language, "de")==0)
-                    {
-                        printf("Keine gültige oder unterstütze Sprache.\n");
-                        printf("Bitte geben Sie eine gültige Einstellung oder einen Eingabestring ein: ");
-                    }else
-                    {
-                        printf("No valid or supported language\n");
-                        printf("Please enter a valid setting or an input-string: ");
-                    }
+                    printf("Settings changed.\n");
+                    printf("Please enter an input-string: ");
                 }
             }else
-            {
+            {   
                 //Ungültige Einstellung
                 if(strcmp(language, "de")==0)
                 {
@@ -158,11 +136,8 @@ int getInput(char input[]) {
                     printf("Please enter a valid setting or an input-string: ");
                 }
             }
-
-            
-            count = 0;
         }else
-        {
+        {            
             //Prüfen auf syntaktische Korrektheit und Zählen der Farben (0 = Fehler, 3-6 = Anzahl der eingegebenen Farbringe
             count = validateInput(input);
 
@@ -184,6 +159,33 @@ void stringToLower(char s[]) {
     for(i = 0; s[i] != '\0'; i++) {
         s[i] = tolower(s[i]);
     }
+}
+
+int checkForSetting(char input[])
+{
+    if(input[0] == '-')return 1;
+    return 0;
+}
+
+int applySetting(char input[])
+{
+    if(input[1] == 'l' && input[2] == 'e' && input[3] == 'n')
+    {
+        if(input[5] == 'd' && input[6] == 'e')
+        {
+            //Sprache in Deutsch geändert
+            strcpy(language, "de");
+            printf("Sprachauswahl: Deutsch.\n");
+            return 1;
+        }else if (input[5] == 'e' && input[6] == 'n')
+        {
+            //Sprache in Englisch geändert
+            strcpy(language, "en");
+            printf("Language: english\n");
+            return 1;
+        }
+    }
+    return 0;
 }
 
 int validateInput(char input[]) {
