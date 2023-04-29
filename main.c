@@ -104,17 +104,33 @@ int getInput(char input[]) {
         {
             //Einstellungen ändern ...
             //nach "-" muss die einstellung folgen, d.h. len
-
-
-            if(strcmp(language, "de")==0)
+            if(input[1] == 'l' && input[2] == 'e' && input[3] == 'n')
             {
-                printf("Einstellungen geändert.\n");
-                printf("Bitte geben Sie den Eingabestring ein: ");
+                //Gültige Spracheinstellung
+                if(strcmp(language, "de")==0)
+                {
+                    printf("Einstellungen geändert.\n");
+                    printf("Bitte geben Sie einen Eingabestring ein: ");
+                }else
+                {
+                    printf("Settings changed.\n");
+                    printf("Please enter an input-string: ");
+                }
             }else
             {
-                printf("Settings changed.\n");
-                printf("Please enter your input-string: ");
+                //Ungültige Einstellung
+                if(strcmp(language, "de")==0)
+                {
+                    printf("Keine gültige Einstellung.\n");
+                    printf("Bitte geben Sie eine gültige Einstellung oder einen Eingabestring ein: ");
+                }else
+                {
+                    printf("No vaild setting.\n");
+                    printf("Please enter a valid setting or an input-string: ");
+                }
             }
+
+            
             count = 0;
         }else
         {
