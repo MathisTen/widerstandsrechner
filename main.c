@@ -100,12 +100,35 @@ int getInput(char input[]) {
         // Alle Wörter zu Kleinbuchstaben
         stringToLower(input);
 
-        //Prüfen auf syntaktische Korrektheit und Zählen der Farben (0 = Fehler, 3-6 = Anzahl der eingegebenen Farbringe
-        count = validateInput(input);
+        //Wenn String mit "-" beginnt -> Einstellung ändern
+        if(input[0] == '-') 
+        {
+            //Einstellungen ändern ...
+            //nach "-" muss die einstellung folgen, d.h. len
 
-        //Wenn fehlerhafte Eingabe, Aufforderung zur Korrektur ausgeben
-        if(count == 0) printf("Ihre Eingabe ist Fehlerhaft, bitte erneut eingeben.\n");
 
+            if(strcmp(language, "de"))
+            {
+                printf("Einstellungen geändert.\n");
+                printf("Bitte geben Sie den Eingabestring ein: ");
+            }else
+            {
+                printf("Settings changed.\n");
+                printf("Please enter your input-string: ");
+            }
+            count = 0;
+        }else
+        {
+            //Prüfen auf syntaktische Korrektheit und Zählen der Farben (0 = Fehler, 3-6 = Anzahl der eingegebenen Farbringe
+            count = validateInput(input);
+
+            //Wenn fehlerhafte Eingabe, Aufforderung zur Korrektur ausgeben
+            if(count == 0) 
+            {   
+                if(strcmp(language, "de"))printf("Ihre Eingabe ist Fehlerhaft, bitte erneut eingeben.\n");
+                else printf("Your input was incorrect, pleas enter a correct input.\n");
+            }
+        }
         //Eingabeabfrage wiederholen, wenn Eingabe fehlerhaft
     }while(count == 0);
 
