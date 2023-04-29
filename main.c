@@ -253,7 +253,7 @@ void separate(char input[],int count, char colour1[], char colour2[], char colou
             token = strtok(NULL, "-");
             strcpy(colour4, token);
             #ifdef DEBUG
-            printf("Separate\n");
+                printf("Separate\n");
             #endif
 
             token = strtok(NULL, "-");
@@ -434,9 +434,13 @@ int calcResistorValue(int count, char input[]) {
     double multiplicator;
     switch (count) {
         case 3:
-            printf("Case 3\n");
+            #ifdef DEBUG
+                printf("Case 3\n");
+            #endif
         case 4:
-            printf("Case 4\n");
+            #ifdef DEBUG
+                printf("Case 4\n");
+            #endif    
             multiplicator = pow(10, (double)values[2]);
             return (values[0]*10+values[1]*1)*(int)multiplicator;
             break;
