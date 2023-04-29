@@ -53,7 +53,6 @@ int main() {
 
     //Variablen für die Farbwerte
     int ring1, ring2, ring3, ring4, ring5, ring6;
-
     
     //syntaktisch korrekte Eingabe abfragen und in input speichern
     count = getInput(input);
@@ -64,14 +63,14 @@ int main() {
     //Prüfen der Logik der jeweiligen Ringe une erneute Eingabeaufforderung, wenn falsch
     if(!checkResistorLogic(input, count)) 
     {
-        if(strcmp(language, "de"))printf("Bitte geben sie einen korrekten Widerstand ein.\n");
+        if(strcmp(language, "de")==0)printf("Bitte geben sie einen korrekten Widerstand ein.\n");
         else printf("Please enter a correct resistor.\n");
         count = getInput(input);
     }
 
     //Ausgabe des Widerstandswertes 
     int resistorValue = calcResistorValue(count, input);
-    if(strcmp(language, "de"))printf("Widerstandswert:");
+    if(strcmp(language, "de")==0)printf("Widerstandswert:");
     else printf("Resistor Value:");
     printf("%i\n", resistorValue);
 
@@ -86,7 +85,7 @@ int getInput(char input[]) {
     int count;
 
     //Aufforderung zur Eingabe
-    if(strcmp(language, "de"))printf("Bitte geben Sie den Eingabestring ein: ");
+    if(strcmp(language, "de")==0)printf("Bitte geben Sie den Eingabestring ein: ");
     else printf("Please enter your input-string: ");
 
     //Eingabe abfragen
@@ -107,7 +106,7 @@ int getInput(char input[]) {
             //nach "-" muss die einstellung folgen, d.h. len
 
 
-            if(strcmp(language, "de"))
+            if(strcmp(language, "de")==0)
             {
                 printf("Einstellungen geändert.\n");
                 printf("Bitte geben Sie den Eingabestring ein: ");
@@ -125,7 +124,7 @@ int getInput(char input[]) {
             //Wenn fehlerhafte Eingabe, Aufforderung zur Korrektur ausgeben
             if(count == 0) 
             {   
-                if(strcmp(language, "de"))printf("Ihre Eingabe ist Fehlerhaft, bitte erneut eingeben.\n");
+                if(strcmp(language, "de")==0)printf("Ihre Eingabe ist Fehlerhaft, bitte erneut eingeben.\n");
                 else printf("Your input was incorrect, pleas enter a correct input.\n");
             }
         }
