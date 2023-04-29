@@ -102,19 +102,48 @@ int getInput(char input[]) {
         //Wenn String mit "-" beginnt -> Einstellung ändern
         if(input[0] == '-') 
         {
+            bool setChanged = 0;
             //Einstellungen ändern ...
             //nach "-" muss die einstellung folgen, d.h. len
             if(input[1] == 'l' && input[2] == 'e' && input[3] == 'n')
             {
-                //Gültige Spracheinstellung
-                if(strcmp(language, "de")==0)
+                if(input[5] == 'd' && input[6] == 'e')
                 {
-                    printf("Einstellungen geändert.\n");
-                    printf("Bitte geben Sie einen Eingabestring ein: ");
+                    //Sprache in Deutsch geändert
+                    strcpy(language, "de");
+                    printf("Sprachauswahl: Deutsch.\n");
+                    setChanged = 1;
+                }else if (input[5] == 'e' && input[6] == 'n')
+                {
+                    //Sprache in Englisch geändert
+                    strcpy(language, "en");
+                    printf("Language: english\n");
+                    setChanged = 1;
+                }
+                if(setChanged)
+                {
+                    //Gültige Spracheinstellung
+                    if(strcmp(language, "de")==0)
+                    {
+                        printf("Einstellungen geändert.\n");
+                        printf("Bitte geben Sie einen Eingabestring ein: ");
+                    }else
+                    {
+                        printf("Settings changed.\n");
+                        printf("Please enter an input-string: ");
+                    }
                 }else
                 {
-                    printf("Settings changed.\n");
-                    printf("Please enter an input-string: ");
+                    //Keine gültige Sprache
+                    if(strcmp(language, "de")==0)
+                    {
+                        printf("Keine gültige oder unterstütze Sprache.\n");
+                        printf("Bitte geben Sie eine gültige Einstellung oder einen Eingabestring ein: ");
+                    }else
+                    {
+                        printf("No valid or supported language\n");
+                        printf("Please enter a valid setting or an input-string: ");
+                    }
                 }
             }else
             {
