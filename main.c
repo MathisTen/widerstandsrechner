@@ -82,6 +82,11 @@ int main() {
     else printf("Resistor Value:");
     printf("%i\n", resistorValue);
 
+    if(count == 6) 
+    {
+        int tempCoeffValue = temperatureCoefficient(&input[40]);
+        printf("Temp: %d ppm/K\n", tempCoeffValue);
+    }
     
     return 0;
 }
