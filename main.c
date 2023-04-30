@@ -47,6 +47,9 @@ int calcResistorValue(int count, char input[]);
 //gibt aus dem gegebenen Ring die Toleranz des Widerstands zurück
 float toleranceValue(char colour[]);
 
+//Prüft, ob das Programm in der Konsole oder als CGI-Script aufgerufen wurde (0 als Konsole, 1 als CGI)
+int checkCall();
+
 //Gibt den Widerstandswert auf der Konsole aus
 void printResValue(int resValue);
 
@@ -56,6 +59,21 @@ void printHtmlResult(int resValue);
 char language[] = "de"; 
 
 int main() {
+
+    if(checkCall())
+    {
+        printf("Content-type: text/html\n\n");
+        printf("<html>\n");
+        printf("<head>\n");
+        printf("<title>Hallo Welt</title>\n");
+        printf("</head>\n");
+        printf("<body>\n");
+        printf("<h1>Hallo Welt!</h1>\n");
+        printf("</body>\n");
+        printf("</html>\n");
+        //printf("CGI\n");
+        return 0;
+    }else printf("Konsole\n");
 
     //Deklarieren der Variablen für den Input und die Farbwörter
     char input[48] = "";
@@ -87,6 +105,7 @@ int main() {
     printf("%i\n", resistorValue);
 
     
+
     return 0;
 }
 
@@ -583,4 +602,36 @@ float toleranceValue(char colour[])
             break;
     }
     return 1;
+}
+
+int checkCall()
+{
+    char* term = getenv("TERM");
+    char* gateway = getenv("GATEWAY_INTERFACE");
+
+    if (term != NULL)
+    {
+        #ifdef DEBUG
+            //printf("Das Programm wurde über die Konsole gestartet.\n");
+        #endif
+        //Aufruf über die Konsole
+        return 0;
+    }
+    else if (gateway != NULL)
+    {
+        #ifdef DEBUG
+            //printf("Das Programm wurde als CGI-Skript gestartet.\n");
+        #endif
+        //Aufruf als CGI-Script
+        return 1;
+    }
+    else
+    {
+        #ifdef DEBUG
+            //printf("Die Ausführungsumgebung konnte nicht erkannt werden.\n");
+        #endif
+        //Keine Ahnung, wie aufgerufen wurde, also Konsolenausgabe
+        return 0;
+    }
+    return 0;
 }
