@@ -47,6 +47,12 @@ int calcResistorValue(int count, char input[]);
 //gibt aus dem gegebenen Ring die Toleranz des Widerstands zurück
 float toleranceValue(char colour[]);
 
+//Gibt den Widerstandswert auf der Konsole aus
+void printResValue(int resValue);
+
+//Gibt den Widerstandswert als HTML aus
+void printHtmlResult(int resValue);
+
 char language[] = "de"; 
 
 int main() {
