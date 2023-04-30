@@ -53,28 +53,27 @@ int checkCall();
 //Gibt den Widerstandswert auf der Konsole aus
 void printResValue(int resValue);
 
+//Initialisert den CGI-Output, um einen Output im Browser zu ermöglichen
+void initHtmlOutput();
+
 //Gibt den Widerstandswert als HTML aus
 void printHtmlResult(int resValue, int tolerance, int tempCoefficient);
-void printHtmlResult(int resValue, int tolerance, int tempCoefficient);
+
+//Beendet den CGI-Output
+void closeHtmlOutput();
 
 char language[] = "de"; 
 
 int main() {
 
-    if(checkCall())
+    //Abfragen der Aufrufumgebung
+    int env = checkCall();
+    
+    //Wenn als CGI-Script, dann starte HTML-Ausgabe
+    if(env)
     {
-        printf("Content-type: text/html\n\n");
-        printf("<html>\n");
-        printf("<head>\n");
-        printf("<title>Hallo Welt</title>\n");
-        printf("</head>\n");
-        printf("<body>\n");
-        printf("<h1>Hallo Welt!</h1>\n");
-        printf("</body>\n");
-        printf("</html>\n");
-        //printf("CGI\n");
-        return 0;
-    }else printf("Konsole\n");
+       initHtmlOutput();       
+    }else printf("Konsole - Start\n");
 
     //Deklarieren der Variablen für den Input und die Farbwörter
     char input[48] = "";
@@ -85,27 +84,38 @@ int main() {
     //Variablen für die Farbwerte
     int ring1, ring2, ring3, ring4, ring5, ring6;
     
-    //syntaktisch korrekte Eingabe abfragen und in input speichern
-    count = getInput(input);
-
-    //Sortieren des Inputs, sodass jedes neue Wort an einer definierten Position beginnt
-    sortInput(input, count);
-   
-    //Prüfen der Logik der jeweiligen Ringe une erneute Eingabeaufforderung, wenn falsch
-    if(!checkResistorLogic(input, count)) 
+    //Wenn in der Konsole, dann "normale" Ausführung
+    if(env == 0)
     {
-        if(strcmp(language, "de")==0)printf("Bitte geben sie einen korrekten Widerstand ein.\n");
-        else printf("Please enter a correct resistor.\n");
+        //syntaktisch korrekte Eingabe abfragen und in input speichern
         count = getInput(input);
+
+        //Sortieren des Inputs, sodass jedes neue Wort an einer definierten Position beginnt
+        sortInput(input, count);
+    
+        //Prüfen der Logik der jeweiligen Ringe une erneute Eingabeaufforderung, wenn falsch
+        if(!checkResistorLogic(input, count)) 
+        {
+            if(strcmp(language, "de")==0)printf("Bitte geben sie einen korrekten Widerstand ein.\n");
+            else printf("Please enter a correct resistor.\n");
+            count = getInput(input);
+        }
+
+        //Ausgabe des Widerstandswertes 
+        int resistorValue = calcResistorValue(count, input);
+        if(strcmp(language, "de")==0)printf("Widerstandswert:");
+        else printf("Resistor Value:");
+        printf("%i\n", resistorValue);
+    }else
+    {
+        //Sonst abfrage des Input über GET   
     }
 
-    //Ausgabe des Widerstandswertes 
-    int resistorValue = calcResistorValue(count, input);
-    if(strcmp(language, "de")==0)printf("Widerstandswert:");
-    else printf("Resistor Value:");
-    printf("%i\n", resistorValue);
-
-    
+    //Wenn als CGI-Script, dann beende HTML-Ausgabe vor Programmende
+    if(env)
+    {
+       closeHtmlOutput();       
+    }else printf("Konsole - Ende\n");
 
     return 0;
 }
@@ -605,7 +615,63 @@ float toleranceValue(char colour[])
     return 1;
 }
 
+void initHtmlOutput()
+{
+    //initialisieren der Web-Oberfläche
+    printf("Content-type: text/html\n\n");
+    printf("<html>\n");
+    printf("<head>\n");
+    printf("<title>Hallo Welt</title>\n");
+    printf("</head>\n");
+    printf("<body>\n");
+    printf("<h1>Hallo Holger!</h1>\n");
+}
+
 void printHtmlResult(int resValue, int tolerance, int tempCoefficient)
 {
     //Ausgabe der HTML-Informationen und des Ergebnisses der Widerstandsberechnung
+    printf("<p>");
+    printf("Der Widerstand beträgt %d Ohm </br>", resValue);
+    if(!tolerance)printf("Die Toleranz beträgt 20%% </br>");
+    else printf("Die Toleranz beträgt %d %%</br>", tolerance);
+    if(tempCoefficient)printf("Der Temperaturkoeffizient beträgt %d ppm/K </br>", tempCoefficient);
+    printf("</p>");
+}
+
+void closeHtmlOutput()
+{
+    printf("</body>\n");
+    printf("</html>\n");
+}
+
+int checkCall()
+{
+    char* term = getenv("TERM");
+    char* gateway = getenv("GATEWAY_INTERFACE");
+
+    if (term != NULL)
+    {
+        #ifdef DEBUG
+            //printf("Das Programm wurde über die Konsole gestartet.\n");
+        #endif
+        //Aufruf über die Konsole
+        return 0;
+    }
+    else if (gateway != NULL)
+    {
+        #ifdef DEBUG
+            //printf("Das Programm wurde als CGI-Skript gestartet.\n");
+        #endif
+        //Aufruf als CGI-Script
+        return 1;
+    }
+    else
+    {
+        #ifdef DEBUG
+            //printf("Die Ausführungsumgebung konnte nicht erkannt werden.\n");
+        #endif
+        //Keine Ahnung, wie aufgerufen wurde, also Konsolenausgabe
+        return 0;
+    }
+    return 0;
 }
