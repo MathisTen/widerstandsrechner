@@ -55,6 +55,7 @@ void printResValue(int resValue);
 
 //Gibt den Widerstandswert als HTML aus
 void printHtmlResult(int resValue, int tolerance, int tempCoefficient);
+void printHtmlResult(int resValue, int tolerance, int tempCoefficient);
 
 char language[] = "de"; 
 
@@ -607,36 +608,4 @@ float toleranceValue(char colour[])
 void printHtmlResult(int resValue, int tolerance, int tempCoefficient)
 {
     //Ausgabe der HTML-Informationen und des Ergebnisses der Widerstandsberechnung
-}
-
-int checkCall()
-{
-    char* term = getenv("TERM");
-    char* gateway = getenv("GATEWAY_INTERFACE");
-
-    if (term != NULL)
-    {
-        #ifdef DEBUG
-            //printf("Das Programm wurde über die Konsole gestartet.\n");
-        #endif
-        //Aufruf über die Konsole
-        return 0;
-    }
-    else if (gateway != NULL)
-    {
-        #ifdef DEBUG
-            //printf("Das Programm wurde als CGI-Skript gestartet.\n");
-        #endif
-        //Aufruf als CGI-Script
-        return 1;
-    }
-    else
-    {
-        #ifdef DEBUG
-            //printf("Die Ausführungsumgebung konnte nicht erkannt werden.\n");
-        #endif
-        //Keine Ahnung, wie aufgerufen wurde, also Konsolenausgabe
-        return 0;
-    }
-    return 0;
 }
