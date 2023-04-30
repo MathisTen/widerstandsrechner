@@ -47,6 +47,8 @@ int calcResistorValue(int count, char input[]);
 //gibt aus dem gegebenen Ring die Toleranz des Widerstands zurück
 float toleranceValue(char colour[]);
 
+int temperatureCoefficient(char colour[]);
+
 char language[] = "de"; 
 
 int main() {
@@ -546,8 +548,8 @@ int calcResistorValue(int count, char input[]) {
 
 float toleranceValue(char colour[])
 {
-    int tolerance = colourValue(colour);
-    switch(tolerance) 
+    int ringValue = colourValue(colour);
+    switch(ringValue) 
     {
         case -10:
             return 5;
@@ -577,4 +579,36 @@ float toleranceValue(char colour[])
             break;
     }
     return 1;
+}
+
+int temperatureCoefficient(char colour[])
+{
+    int ringValue = colourValue(colour);
+    switch(ringValue)
+    {
+        case 0:
+            return 200;
+            break;
+        case 1:
+            return 100;
+            break;
+        case 2:
+            return 50;
+            break;
+        case 3:
+            return 15;
+            break;
+        case 4: 
+            return 25;
+            break;
+        case 6:
+            return 10;
+            break;
+        case 7:
+            return 5;
+            break; 
+        default:
+            break;
+    }
+
 }
