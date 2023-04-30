@@ -615,6 +615,8 @@ float toleranceValue(char colour[])
     return 1;
 }
 
+
+
 void initHtmlOutput()
 {
     //initialisieren der Web-Oberfläche
