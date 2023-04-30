@@ -1,35 +1,48 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>
-		Widerstandsrechner v0.0
-		</title>
+		<title>Widerstandsrechner v0.0</title>
 
-	 <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-		flex-direction: column;
-            margin: 0;
-	
-       	 }
+		<style>
+			body {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+				margin: 0;
+			}
 
-	h1	{
-	 	min-height: 100;	
-		margin-top: 0;
-		}
+			h1 {
+				min-height: 100px;
+				margin-top: 0;
+			}
 
-
-   	</style>
+			.output {
+				font-size: 24px;
+				font-weight: bold;
+				margin-top: 20px;
+				border: 1px solid #000;
+				padding: 10px;
+				background-color: white; /* Hintergrundfarbe des Ausgabefelds */
+			}
+		</style>
 	</head>
 
 	<body>
-	<h1>
-		Dies wird der Widerstandsrechner von Mathis, Tim und Holger
-	</h1>
-	<p>
-		Der errechnete Widerstand beträgt 25 Ohm
-	<p>
+		<h1>Dies wird der Widerstandsrechner von Mathis, Tim und Holger</h1>
+		<p class="output" id="output">Der errechnete Widerstand beträgt 25 Ohm</p>
+
+		<form>
+			<label for="color">Farbe für den Kasten wählen:</label>
+			<input type="color" id="color" name="color" onchange="changeColor()">
+
+			<script>
+				function changeColor() {
+					var output = document.getElementById('output');
+					var color = document.getElementById('color').value;
+					output.style.backgroundColor = color;
+				}
+			</script>
+		</form>
 	</body>
-	</html>
+</html>
