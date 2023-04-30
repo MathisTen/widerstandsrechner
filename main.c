@@ -45,7 +45,7 @@ int* resistorDigits(int count, char input[]);
 int calcResistorValue(int count, char input[]);
 
 //gibt aus dem gegebenen Ring die Toleranz des Widerstands zurück
-float toleranceValue(char colour[]);
+float calcToleranceValue(char colour[]);
 
 //Gibt den Widerstandswert auf der Konsole aus
 void printConsole(int resValue,int toleranceValue, int coefficientValue);
@@ -82,13 +82,9 @@ int main() {
 
     //Ausgabe des Widerstandswertes 
     int resistorValue = calcResistorValue(count, input);
-    
-    
+    //float toleranceValue = calcToleranceValue();
 
-    if(strcmp(language, "de")==0)printf("Widerstandswert:");
-    else printf("Resistor Value:");
-    printf("%i\n", resistorValue);
-
+    printConsole(resistorValue,0, 0);
     
     return 0;
 }
@@ -553,7 +549,7 @@ int calcResistorValue(int count, char input[]) {
     }
 }
 
-float toleranceValue(char colour[])
+float calcToleranceValue(char colour[])
 {
     int tolerance = colourValue(colour);
     switch(tolerance) 
@@ -588,13 +584,10 @@ float toleranceValue(char colour[])
     return 1;
 }
  
- void printConsole(int resValue, int toleranceValue,int coefficientValue)
- {
+void printConsole(int resValue, int toleranceValue,int coefficientValue)
+{
     printf("Der Widerstandswert betraegt %d Ohm\n", resValue);
-    if(resValue ==0) {}
-    else
-    {
-        printf("Die Toleranz beträgt %d %%\n", toleranceValue);
-    }
-    printf("Der Koeffizient beträgt %d ppm/k\n", coefficientValue);
- }
+    if(toleranceValue ==0)      printf("Die Toleranz beträgt +/- 20%%\n");
+    else                        printf("Die Toleranz beträgt %d %%\n", toleranceValue);
+    if(coefficientValue !=0)    printf("Der Koeffizient beträgt %d ppm/k\n", coefficientValue);
+}
