@@ -14,6 +14,12 @@ int getInput(char input[]);
 //Wandelt alle Benutzereingaben in Kleinbuchstaben um
 void stringToLower(char s[]);
 
+//Prüft, ob die Eingabe eine Einstellung ist
+int checkForSetting(char input[]);
+
+//Wendet die Einstellung an
+int applySetting(char input[]);
+
 //Prüft den eingegeben String auf die korrekte Syntax und gibt als Rückgabewert die Anzahl der Farbwörter zurück, gibt "FALSE" zurück, wenn der String nicht korrekt ist
 int validateInput(char input_string[]);
 
@@ -53,7 +59,6 @@ int main() {
 
     //Variablen für die Farbwerte
     int ring1, ring2, ring3, ring4, ring5, ring6;
-
     
     //syntaktisch korrekte Eingabe abfragen und in input speichern
     count = getInput(input);
@@ -64,14 +69,14 @@ int main() {
     //Prüfen der Logik der jeweiligen Ringe une erneute Eingabeaufforderung, wenn falsch
     if(!checkResistorLogic(input, count)) 
     {
-        if(strcmp(language, "de") == 0)printf("Bitte geben sie einen korrekten Widerstand ein.\n");
+        if(strcmp(language, "de")==0)printf("Bitte geben sie einen korrekten Widerstand ein.\n");
         else printf("Please enter a correct resistor.\n");
         count = getInput(input);
     }
 
     //Ausgabe des Widerstandswertes 
     int resistorValue = calcResistorValue(count, input);
-    if(strcmp(language, "de"))printf("Widerstandswert:");
+    if(strcmp(language, "de")==0)printf("Widerstandswert:");
     else printf("Resistor Value:");
     printf("%i\n", resistorValue);
 
@@ -83,10 +88,10 @@ int main() {
 
 int getInput(char input[]) {
 
-    int count;
+    int count = 0;
 
     //Aufforderung zur Eingabe
-    if(strcmp(language, "de"))printf("Bitte geben Sie den Eingabestring ein: ");
+    if(strcmp(language, "de")==0)printf("Bitte geben Sie den Eingabestring ein: ");
     else printf("Please enter your input-string: ");
 
     //Eingabe abfragen
@@ -100,12 +105,49 @@ int getInput(char input[]) {
         // Alle Wörter zu Kleinbuchstaben
         stringToLower(input);
 
-        //Prüfen auf syntaktische Korrektheit und Zählen der Farben (0 = Fehler, 3-6 = Anzahl der eingegebenen Farbringe
-        count = validateInput(input);
+        count = 0;
 
-        //Wenn fehlerhafte Eingabe, Aufforderung zur Korrektur ausgeben
-        if(count == 0) printf("Ihre Eingabe ist Fehlerhaft, bitte erneut eingeben.\n");
+        //Wenn Eingabe ist Einstellung -> Einstellung ändern
+        if(checkForSetting(input)) 
+        {
+            //Einstellungen ändern ...
+            if(applySetting(input))
+            {                
+                //Gültige Einstellung
+                if(strcmp(language, "de")==0)
+                {
+                    printf("Einstellungen geändert.\n");
+                    printf("Bitte geben Sie einen Eingabestring ein: ");
+                }else
+                {
+                    printf("Settings changed.\n");
+                    printf("Please enter an input-string: ");
+                }
+            }else
+            {   
+                //Ungültige Einstellung
+                if(strcmp(language, "de")==0)
+                {
+                    printf("Keine gültige Einstellung.\n");
+                    printf("Bitte geben Sie eine gültige Einstellung oder einen Eingabestring ein: ");
+                }else
+                {
+                    printf("No vaild setting.\n");
+                    printf("Please enter a valid setting or an input-string: ");
+                }
+            }
+        }else
+        {            
+            //Prüfen auf syntaktische Korrektheit und Zählen der Farben (0 = Fehler, 3-6 = Anzahl der eingegebenen Farbringe
+            count = validateInput(input);
 
+            //Wenn fehlerhafte Eingabe, Aufforderung zur Korrektur ausgeben
+            if(count == 0) 
+            {   
+                if(strcmp(language, "de")==0)printf("Ihre Eingabe ist Fehlerhaft, bitte erneut eingeben.\n");
+                else printf("Your input was incorrect, pleas enter a correct input.\n");
+            }
+        }
         //Eingabeabfrage wiederholen, wenn Eingabe fehlerhaft
     }while(count == 0);
 
@@ -117,6 +159,33 @@ void stringToLower(char s[]) {
     for(i = 0; s[i] != '\0'; i++) {
         s[i] = tolower(s[i]);
     }
+}
+
+int checkForSetting(char input[])
+{
+    if(input[0] == '-')return 1;
+    return 0;
+}
+
+int applySetting(char input[])
+{
+    if(input[1] == 'l' && input[2] == 'e' && input[3] == 'n')
+    {
+        if(input[5] == 'd' && input[6] == 'e')
+        {
+            //Sprache in Deutsch geändert
+            strcpy(language, "de");
+            printf("Sprachauswahl: Deutsch.\n");
+            return 1;
+        }else if (input[5] == 'e' && input[6] == 'n')
+        {
+            //Sprache in Englisch geändert
+            strcpy(language, "en");
+            printf("Language: english\n");
+            return 1;
+        }
+    }
+    return 0;
 }
 
 int validateInput(char input[]) {
