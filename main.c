@@ -358,6 +358,7 @@ int checkRing(int count, int number, char colour[]) {
         case 1: 
         case 2:
             //test für ring 1 und 2
+            if(strcmp(colour, "gold") == 0 || strcmp(colour, "au") == 0) return 0;
             break;
         case 3:
             // test für Ring 3
