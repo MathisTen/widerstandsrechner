@@ -55,6 +55,7 @@ void printResValue(int resValue);
 
 //Gibt den Widerstandswert als HTML aus
 void printHtmlResult(int resValue, int tolerance, int tempCoefficient);
+void printHtmlResult(int resValue, int tolerance, int tempCoefficient);
 
 char language[] = "de"; 
 
@@ -603,6 +604,8 @@ float toleranceValue(char colour[])
     }
     return 1;
 }
+
+
 
 void printHtmlResult(int resValue, int tolerance, int tempCoefficient)
 {
