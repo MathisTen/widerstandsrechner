@@ -48,7 +48,7 @@ int calcResistorValue(int count, char input[]);
 float toleranceValue(char colour[]);
 
 //Gibt den Widerstandswert auf der Konsole aus
-void printResValue(int resValue);
+void printConsole(int resValue,int toleranceValue, int coefficientValue);
 
 //Gibt den Widerstandswert als HTML aus
 void printHtmlResult(int resValue);
@@ -82,6 +82,9 @@ int main() {
 
     //Ausgabe des Widerstandswertes 
     int resistorValue = calcResistorValue(count, input);
+    
+    
+
     if(strcmp(language, "de")==0)printf("Widerstandswert:");
     else printf("Resistor Value:");
     printf("%i\n", resistorValue);
@@ -584,3 +587,14 @@ float toleranceValue(char colour[])
     }
     return 1;
 }
+ 
+ void printConsole(int resValue, int toleranceValue,int coefficientValue)
+ {
+    printf("Der Widerstandswert betraegt %d Ohm\n", resValue);
+    if(resValue ==0) {}
+    else
+    {
+        printf("Die Toleranz beträgt %d %%\n", toleranceValue);
+    }
+    printf("Der Koeffizient beträgt %d ppm/k\n", coefficientValue);
+ }
