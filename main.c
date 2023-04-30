@@ -64,7 +64,7 @@ int main() {
     //Prüfen der Logik der jeweiligen Ringe une erneute Eingabeaufforderung, wenn falsch
     if(!checkResistorLogic(input, count)) 
     {
-        if(strcmp(language, "de"))printf("Bitte geben sie einen korrekten Widerstand ein.\n");
+        if(strcmp(language, "de") == 0)printf("Bitte geben sie einen korrekten Widerstand ein.\n");
         else printf("Please enter a correct resistor.\n");
         count = getInput(input);
     }
@@ -359,12 +359,19 @@ int checkRing(int count, int number, char colour[]) {
         case 2:
             //test für ring 1 und 2
             if(strcmp(colour, "gold") == 0 || strcmp(colour, "au") == 0) return 0;
+            if(strcmp(colour, "silber") == 0 || strcmp(colour, "silver") == 0 || strcmp(colour, "ag") == 0) return 0;
             break;
         case 3:
             // test für Ring 3
+            if( strcmp(colour, "grau") == 0 || strcmp(colour, "grey") == 0 || strcmp(colour, "gy") ==0) return 0;
+            if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0) return 0;
             break;
         case 4:
         // test für Ring 4
+        if(strcmp(colour, "schwarz") == 0 || strcmp(colour, "black") == 0 || strcmp(colour, "bk") == 0) return 0;
+        if(strcmp(colour, "orange") == 0 || strcmp(colour, "orange") == 0 || strcmp(colour, "og") == 0) return 0;
+        if(strcmp(colour, "gelb") == 0 || strcmp(colour, "yellow") == 0 || strcmp(colour, "yl") == 0) return 0;
+        if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0) return 0;
         break;
         }
         
@@ -375,15 +382,26 @@ int checkRing(int count, int number, char colour[]) {
           case 2:
           case 3:
             // test für ring 1,2,3)
+            if(strcmp(colour, "gold") == 0 || strcmp(colour, "au") == 0) return 0;
+            if(strcmp(colour, "silber") == 0 || strcmp(colour, "silver") == 0 || strcmp(colour, "ag") == 0) return 0;
             break;
          case 4:
             // test ring 4
+            if( strcmp(colour, "grau") == 0 || strcmp(colour, "grey") == 0 || strcmp(colour, "gy") ==0) return 0;
+            if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0) return 0;
             break;
          case 5:
          // test für ring 5
+            if(strcmp(colour, "schwarz") == 0 || strcmp(colour, "black") == 0 || strcmp(colour, "bk") == 0) return 0;
+            if(strcmp(colour, "orange") == 0 || strcmp(colour, "orange") == 0 || strcmp(colour, "og") == 0) return 0;
+            if(strcmp(colour, "gelb") == 0 || strcmp(colour, "yellow") == 0 || strcmp(colour, "yl") == 0) return 0;
+            if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0) return 0;
          break;
          case 6:
          // test für ring 6
+            if(strcmp(colour, "gold") == 0 || strcmp(colour, "au") == 0) return 0;
+            if(strcmp(colour, "silber") == 0 || strcmp(colour, "silver") == 0 || strcmp(colour, "ag") == 0) return 0;
+            if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0) return 0;
          break;
         }
     
