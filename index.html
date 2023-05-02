@@ -1,34 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
+<!DOCTYPE html>														<!-- Teilt dem Browser mit, um welche Art von Datei es sich handelt hier. HTML -->
+<html>															<!-- Beginn des HTML-Dokuments -->
+<head>															<!-- Beginn der Kopfzeile (Name der oben in der Taskleiste angezeigt wird) -->
 	<title>Widerstandsrechner v0.0</title>
-	<style>
-		body {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			flex-direction: column;
-			margin: 0;
+	<style>														
+		body {													/* wählt alle Elemente im body aus */	
+			display: flex;											/* Elemente werden flexibel angeordnet */
+			justify-content: center;									/* Elemente werden vertikal und oben nach*/
+			align-items: center;										/* Elemente werden zentriert und horizontal*/
+			flex-direction: column;										/* Elemente werden positioniert */
+			margin: 0;												/* Elemente werden bündig am oberen rand angeordnet */
 		}
 
-		h1 {
-			min-height: 100px;
-			margin-top: 0;
-		}
+		h1 {														/* Titel wird extra verändert(extra Funktion erstellt) */	
+			min-height: 100px;										/* Titel wird immer sichtbar dargestellt vom browser */	
+			margin-top: 0;											/* Titel wird bündig am oberen Rand angepordnet */
+		}														/* Extra Funktion wird geschlossen */
 
 		input[type="text"] {
 			width: 200px;
 			padding: 10px;
 			border: 1px solid #ccc;
 		}
-	</style>
-	<script>
-		function setFieldColor(event) {
+	</style>					
+	<script>														<!-- Script Element beginnt hier für die nachfolgenden Anweisungen -->								
+
+			function setFieldColor(event) {								<!-- Definition der Funktion, mit der Variable event -->							
 			var inputField = event.target;
-			var fieldValue = inputField.value.toLowerCase();
-			if (fieldValue === "schwarz"	||	fieldValue ==="black") {
-				inputField.style.background = "black";
-				inputField.style.color = "white";
+			var fieldValue = inputField.value.toLowerCase();					<!-- Eingegebener Farbwert wird in der fieldValue Variable übergeben -->
+			if (fieldValue === "schwarz"	||	fieldValue ==="black") {			<!-- Abfragen aller Farbeingaben, sowohl Englisch als auch Deutsch möglich -->
+				inputField.style.background = "black";						<!-- Hintergrund wird dem eingegebenen Farbnamen angepasst (Schwarzer Hintergrund = weiße Schriftfarbe) -->
+				inputField.style.color = "white";							<!-- Schriftfarbe wird hier auf weiß gesetzt, sodass der einegegebene Text lesbar bleibt -->
 			} else if (fieldValue === "rot"	||	fieldValue === "red") {
 				inputField.style.background = "red";
 				inputField.style.color = "white";
@@ -41,7 +42,7 @@
 			} else if (fieldValue === "grün"	||	fieldValue === "green") {
 				inputField.style.background = "green";
 				inputField.style.color = "white";
-			} else if (fieldValue === "violett" || fieldValue === "lila") {
+			} else if (fieldValue === "violett" || 	fieldValue === "lila"	||	fieldValue === "violet") {
 				inputField.style.background = "purple";
 				inputField.style.color = "white";
 
@@ -76,11 +77,11 @@
 		}
 	</script>
 </head>
-<body>
-	<h1>Dies wird der Widerstandsrechner von Mathis, Tim und Holger</h1>
+<body>															<!-- Enthält den dargestellten Inhalt eines HTML-Dokuments (Body-tag) -->
+	<h1>Dies wird der Widerstandsrechner von Mathis, Tim und Holger</h1>				<!-- Definierung der Überschrift -->
 	<form action="index.html" method="get">
-		<label for="R1">Farbwiderstandsring 1:</label>
-		<input type="text" id="R1" name="R1" oninput="setFieldColor(event)"><br><br>
+		<label for="R1">Farbwiderstandsring 1:</label>							<!-- das label Element stellt eine Beschriftung für Formularelemente dar -->
+		<input type="text" id="R1" name="R1" oninput="setFieldColor(event)"><br><br>		<!-- type = Textform, id wird zugewiesen, name wird zugeweisen, ausgabe des eingebebenen Textes -->
 
 		<label for="R2">Farbwiderstandsring 2:</label>
 		<input type="text" id="R2" name="R2" oninput="setFieldColor(event)"><br><br>
@@ -103,5 +104,5 @@
 
 		<button type="submit">Widerstand berechnen</button>
 	</form>
-</body>
-</html>
+</body>															<!-- Ende des Body-tags -->
+</html>															<!-- Ende des HTML Dokuments -->
