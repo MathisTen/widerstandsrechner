@@ -1,55 +1,107 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>									<!-- Öffnung Titelanweisung -->
-		Widerstandsrechner v0.0
-		</title>									<!-- Schließen der Titelanweisung -->
+<head>
+	<title>Widerstandsrechner v0.0</title>
+	<style>
+		body {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			margin: 0;
+		}
 
-	 <style>
-        body {										/* wählt alle Elemente im body aus */	
-            display: flex;								/* Elemente werden flexibel angeordnet */
-            justify-content: center;						/* Elemente werden vertikal und oben nach unten angeordnet */
-            align-items: center;							/* Elemente werden zentriert und horizontal angeordnet */
-		flex-direction: column;							/* Elemente werden positioniert */
-            margin: 0;									/* Elemente werden bündig am oberen rand angeordnet */
-	
-       	 }
-	
-	h1	{										/* Titel wird extra verändert(extra Funktion erstellt) */		
-	 	min-height: 100;								/* Titel wird immer sichtbar dargestellt vom browser */	
-		margin-top: 0;								/* Titel wird bündig am oberen Rand angepordnet */
-		}										/* Extra Funktion wird geschlossen */
+		h1 {
+			min-height: 100px;
+			margin-top: 0;
+		}
 
+		input[type="text"] {
+			width: 200px;
+			padding: 10px;
+			border: 1px solid #ccc;
+		}
+	</style>
+	<script>
+		function setFieldColor(event) {
+			var inputField = event.target;
+			var fieldValue = inputField.value.toLowerCase();
+			if (fieldValue === "schwarz"	||	fieldValue ==="black") {
+				inputField.style.background = "black";
+				inputField.style.color = "white";
+			} else if (fieldValue === "rot"	||	fieldValue === "red") {
+				inputField.style.background = "red";
+				inputField.style.color = "white";
+			} else if (fieldValue === "blau"	||	fieldValue === "blue") {
+				inputField.style.background = "blue";
+				inputField.style.color = "white";
+			} else if (fieldValue === "gelb"	||	fieldValue === "yellow") {
+				inputField.style.background = "yellow";
+				inputField.style.color = "black";
+			} else if (fieldValue === "grün"	||	fieldValue === "green") {
+				inputField.style.background = "green";
+				inputField.style.color = "white";
+			} else if (fieldValue === "violett" || fieldValue === "lila") {
+				inputField.style.background = "purple";
+				inputField.style.color = "white";
 
-   	</style>
-	</head>
+			} else if (fieldValue === "braun"	||	fieldValue === "brown") {
+				 inputField.style.background = "brown";
+				 inputField.style.color = "white";
 
-	<body>
-	<h1>
-		Dies wird der Widerstandsrechner von Mathis, Tim und Holger
-	</h1>
+			} else if (fieldValue === "silber"	||	fieldValue === "silver") {
+				 inputField.style.background = "silver";
+				 inputField.style.color = "white";
+
+			} else if (fieldValue === "gold"	||	fieldValue === "gold") {
+				 inputField.style.background = "gold";
+				 inputField.style.color = "white";
+
+			} else if (fieldValue === "grau"	||	fieldValue ==="grey") {
+				 inputField.style.background = "grey";
+				 inputField.style.color = "white";
+
+			} else if (fieldValue === "weiß"	||	fieldValue === "white") {
+				 inputField.style.background = "white";
+				 inputField.style.color = "black";
+
+			} else if (fieldValue === "orange"	||	fieldValue === "orange") {
+				 inputField.style.background = "orange";
+				 inputField.style.color = "white";
+
+			} else {
+				inputField.style.background = "";
+				inputField.style.color = "";
+			}
+		}
+	</script>
+</head>
+<body>
+	<h1>Dies wird der Widerstandsrechner von Mathis, Tim und Holger</h1>
 	<form action="index.html" method="get">
-	<label for="R1"> Farbwiderstandsring 1 			:</label>
-	<input type="text" id="R1" name="R1">			<br><br>
-	
-	<label for="r2"> Farbwiderstandsring 2			:</label>
-	<input type="text" id="R2" name="R2">			<br><br>
+		<label for="R1">Farbwiderstandsring 1:</label>
+		<input type="text" id="R1" name="R1" oninput="setFieldColor(event)"><br><br>
 
-	<label for="name"> Farbwiderstandsring 3			:</label>
-	<input type="text" id="R3" name="R3">			<br><br>
+		<label for="R2">Farbwiderstandsring 2:</label>
+		<input type="text" id="R2" name="R2" oninput="setFieldColor(event)"><br><br>
+				
+		<label for="R3">Farbwiderstandsring 3:</label>
+		<input type="text" id="R3" name="R3"oninput="setFieldColor(event)"><br><br>
 
-	<label for="name"> Farbwiderstandsring 4			:</label>
-	<input type="text" id="R4" name="R4">			<br><br>
 
-	<label for="name"> Farbwiderstandsring 5			:</label>
-	<input type="text" id="R5" name="R5">			<br><br>
+		<label for="R4">Farbwiderstandsring 4:</label>
+		<input type="text" id="R4" name="R4"oninput="setFieldColor(event)"><br><br>
 
-	<label for="name"> Farbwiderstandsring 6			:</label>
-	<input type="text" id="R6" name="R6">			<br><br>
-	
-	<button type="submit"> Widerstand berechnen		</button>		
 
-	<br>
+		<label for="R5">Farbwiderstandsring 5:</label>
+		<input type="text" id="R5" name="R5"oninput="setFieldColor(event)"><br><br>
+
+
+		<label for="R6">Farbwiderstandsring 6:</label>
+		<input type="text" id="R6" name="R6"oninput="setFieldColor(event)"><br><br>
+
+
+		<button type="submit">Widerstand berechnen</button>
 	</form>
-	</body>
-	</html>
+</body>
+</html>
