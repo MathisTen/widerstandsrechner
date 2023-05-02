@@ -9,7 +9,10 @@
 
 
 //Benutzeraufforderung zur Eingabe des Farb-String und speichert in input[], gibt die Anzahl der Wörter zurück
-int getInput(char input[]);
+int getInputConsole(char input[]);
+
+//Auslesen der Eingabe 
+int getInputCGI(char input[]);
 
 //Wandelt alle Benutzereingaben in Kleinbuchstaben um
 void stringToLower(char s[]);
@@ -85,10 +88,10 @@ int main() {
     int ring1, ring2, ring3, ring4, ring5, ring6;
     
     //Wenn in der Konsole, dann "normale" Ausführung
-    if(env == 0)
+    if(!env)
     {
         //syntaktisch korrekte Eingabe abfragen und in input speichern
-        count = getInput(input);
+        count = getInputConsole(input);
 
         //Sortieren des Inputs, sodass jedes neue Wort an einer definierten Position beginnt
         sortInput(input, count);
@@ -98,7 +101,7 @@ int main() {
         {
             if(strcmp(language, "de")==0)printf("Bitte geben sie einen korrekten Widerstand ein.\n");
             else printf("Please enter a correct resistor.\n");
-            count = getInput(input);
+            count = getInputConsole(input);
         }
 
         //Ausgabe des Widerstandswertes 
@@ -108,6 +111,7 @@ int main() {
         printf("%i\n", resistorValue);
     }else
     {
+        count = getInputCGI(input);
         //Sonst abfrage des Input über GET   
     }
 
@@ -122,7 +126,7 @@ int main() {
 
 
 
-int getInput(char input[]) {
+int getInputConsole(char input[]) {
 
     int count = 0;
 
@@ -188,6 +192,31 @@ int getInput(char input[]) {
     }while(count == 0);
 
     return count;
+}
+
+int getInputCGI(char input[])
+{
+    char colour1[8];
+    char colour2[8];
+    char *query = getenv("QUERY_STRING");
+    if (query == NULL) return 0;
+    printf("Eingegebener Query:</br>%s</br>", query);
+    // R1=rot&R2=gelb&R3=blau&R4=gruen&R5=gelb&R6=schwarz
+    //sscanf(query, "R1=%s", &input[0]); 
+    sscanf(query, "R1=%[^&]&R2=%[^&]&R3=%[^&]&R4=%[^&]&R5=%[^&]&R6=%s", &input[0], &input[8], &input[16], &input[24], &input[32], &input[40]);
+    printf("Input: </br>");
+    for(int i = 0;i<6;i++)
+    {
+        for(int j = 0;j<8;j++)
+        {
+            printf("%c", input[(i*8)+j]);
+        }
+        printf("</br>");
+    }
+    
+   
+    
+    return 0;
 }
 
 void stringToLower(char s[]) {
