@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <stdarg.h>
-#define DEBUG
+//#define DEBUG
 
 
 //Benutzeraufforderung zur Eingabe des Farb-String und speichert in input[], gibt die Anzahl der Wörter zurück
@@ -196,25 +196,26 @@ int getInputConsole(char input[]) {
 
 int getInputCGI(char input[])
 {
-    char colour1[8];
-    char colour2[8];
-    char *query = getenv("QUERY_STRING");
-    if (query == NULL) return 0;
-    printf("Eingegebener Query:</br>%s</br>", query);
-    // R1=rot&R2=gelb&R3=blau&R4=gruen&R5=gelb&R6=schwarz
-    //sscanf(query, "R1=%s", &input[0]); 
-    sscanf(query, "R1=%[^&]&R2=%[^&]&R3=%[^&]&R4=%[^&]&R5=%[^&]&R6=%s", &input[0], &input[8], &input[16], &input[24], &input[32], &input[40]); 
-    if(input[0] == '\0' || input[8] == '\0' || input[16] == '\0')
-    {
-        printf("Bitte gib einen korrekten Widerstand mit mindestens drei Ringen an");
-        return 0;
-    }
-    for(int i = 3; i<6; i++)
-    {
-        if(input[i*8] == '\0')
-    }
+    int count = 0;
 
-    return 0;
+    char *query = getenv("QUERY_STRING");
+
+    if (query == NULL) return 0;
+
+    printf("Eingegebener Query:</br>%s</br>", query);
+
+    sscanf(query, "R1=%[^&]&R2=%[^&]&R3=%[^&]&R4=%[^&]&R5=%[^&]&R6=%s", &input[0], &input[8], &input[16], &input[24], &input[32], &input[40]); 
+    stringToLower(input);
+    count = validateInput(input);
+
+    if(count == 0) 
+            {   
+                
+                printf("Keine Korrekte Eingabe. </br>");
+                printf("Bitte kehren sie zur <a href=\"test_cgi.html\" >Eingabeseite</a> zurück.</br>");
+                return 0;
+            }
+    return count;
 }
 
 void stringToLower(char s[]) {
@@ -350,9 +351,9 @@ void sortInput(char input[], int count) {
 
 void separate(char input[],int count, char colour1[], char colour2[], char colour3[], char colour4[], char colour5[], char colour6[])
 {
-#ifdef DEBUG
-    printf("Separate\n");
-#endif
+    #ifdef DEBUG
+        printf("Separate\n");
+    #endif
     char *token;
 
     token = strtok(input, "-");
