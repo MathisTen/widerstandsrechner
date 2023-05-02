@@ -203,19 +203,17 @@ int getInputCGI(char input[])
     printf("Eingegebener Query:</br>%s</br>", query);
     // R1=rot&R2=gelb&R3=blau&R4=gruen&R5=gelb&R6=schwarz
     //sscanf(query, "R1=%s", &input[0]); 
-    sscanf(query, "R1=%[^&]&R2=%[^&]&R3=%[^&]&R4=%[^&]&R5=%[^&]&R6=%s", &input[0], &input[8], &input[16], &input[24], &input[32], &input[40]);
-    printf("Input: </br>");
-    for(int i = 0;i<6;i++)
+    sscanf(query, "R1=%[^&]&R2=%[^&]&R3=%[^&]&R4=%[^&]&R5=%[^&]&R6=%s", &input[0], &input[8], &input[16], &input[24], &input[32], &input[40]); 
+    if(input[0] == '\0' || input[8] == '\0' || input[16] == '\0')
     {
-        for(int j = 0;j<8;j++)
-        {
-            printf("%c", input[(i*8)+j]);
-        }
-        printf("</br>");
+        printf("Bitte gib einen korrekten Widerstand mit mindestens drei Ringen an");
+        return 0;
     }
-    
-   
-    
+    for(int i = 3; i<6; i++)
+    {
+        if(input[i*8] == '\0')
+    }
+
     return 0;
 }
 
