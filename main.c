@@ -53,6 +53,9 @@ int calcResistorValue(int count, char input[]);
 //gibt aus dem gegebenen Ring die Toleranz des Widerstands zurück
 float toleranceValue(char colour[]);
 
+//gibt aus dem gegebenen Ring den Temperaturkoeffizienten des Widerstands zurück
+int temperatureCoefficient(char colour[]);
+
 //Prüft, ob das Programm in der Konsole oder als CGI-Script aufgerufen wurde (0 als Konsole, 1 als CGI)
 int checkCall();
 
@@ -63,14 +66,13 @@ void printResValue(int resValue);
 void initHtmlOutput();
 
 //Gibt den Widerstandswert als HTML aus
-void printHtmlResult(int resValue, int tolerance, int tempCoefficient);
+void printHtmlResult(int resValue, float tolerance, int tempCoefficient);
 
 //Beendet den CGI-Output
 void closeHtmlOutput();
 
-int temperatureCoefficient(char colour[]);
-
 char language[] = "de"; 
+
 
 int main() {
 
@@ -703,7 +705,6 @@ int temperatureCoefficient(char colour[])
 
 }
 
-
 void initHtmlOutput()
 {
     //initialisieren der Web-Oberfläche
@@ -716,7 +717,7 @@ void initHtmlOutput()
     printf("<h1>Hallo Holger!</h1>\n");
 }
 
-void printHtmlResult(int resValue, int tolerance, int tempCoefficient)
+void printHtmlResult(int resValue, float tolerance, int tempCoefficient)
 {
     //Ausgabe der HTML-Informationen und des Ergebnisses der Widerstandsberechnung
     printf("<p>");
