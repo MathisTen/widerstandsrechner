@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <stdarg.h>
-//#define DEBUG
+#define DEBUG
 
 
 //Benutzeraufforderung zur Eingabe des Farb-String und speichert in input[], gibt die Anzahl der Wörter zurück
@@ -22,6 +22,9 @@ int checkForSetting(char input[]);
 
 //Wendet die Einstellung an
 int applySetting(char input[]);
+
+//Zählt die eingegebenen Farben
+int countInput(char input[]);
 
 //Prüft den eingegeben String auf die korrekte Syntax und gibt als Rückgabewert die Anzahl der Farbwörter zurück, gibt "FALSE" zurück, wenn der String nicht korrekt ist
 int validateInput(char input_string[]);
@@ -78,14 +81,11 @@ int main() {
        initHtmlOutput();       
     }else printf("Konsole - Start\n");
 
-    //Deklarieren der Variablen für den Input und die Farbwörter
+    //Deklarieren der Variablen für den Input
     char input[48] = "";
     
     //Variable für die Anzahl der Wörter im eingegebenen String
     int count = 0;
-
-    //Variablen für die Farbwerte
-    int ring1, ring2, ring3, ring4, ring5, ring6;
     
     //Wenn in der Konsole, dann "normale" Ausführung
     if(!env)
@@ -111,9 +111,24 @@ int main() {
         printf("%i\n", resistorValue);
     }else
     {
+
         count = getInputCGI(input);
-        //Sonst abfrage des Input über GET   
+        //Wenn Count 0, dann kein Korrekter String.
+        if(!count) return 0;  
+
+        //Prüfen der Logik der jeweiligen Ringe une erneute Eingabeaufforderung mit Programmende, wenn falsch
+        if(!checkResistorLogic(input, count)) 
+        {
+            printf("Keine Korrekte Eingabelogik. </br>");
+            printf("Bitte kehren sie zur <a href=\"test_cgi.html\" >Eingabeseite</a> zurück.</br>");
+            return 0;
+        }
+        //Ausgabe des Widerstandswertes 
+        int resistorValue = calcResistorValue(count, input);
+        printf("Der Widerstand beträgt %d Ohm.</br>");
     }
+
+
 
     //Wenn als CGI-Script, dann beende HTML-Ausgabe vor Programmende
     if(env)
@@ -203,14 +218,15 @@ int getInputCGI(char input[])
     if (query == NULL) return 0;
 
     printf("Eingegebener Query:</br>%s</br>", query);
-
+    input[7] = '-';
+    input[15] = '-';
+    input[23] = '-';
     sscanf(query, "R1=%[^&]&R2=%[^&]&R3=%[^&]&R4=%[^&]&R5=%[^&]&R6=%s", &input[0], &input[8], &input[16], &input[24], &input[32], &input[40]); 
     stringToLower(input);
     count = validateInput(input);
 
     if(count == 0) 
             {   
-                
                 printf("Keine Korrekte Eingabe. </br>");
                 printf("Bitte kehren sie zur <a href=\"test_cgi.html\" >Eingabeseite</a> zurück.</br>");
                 return 0;
@@ -250,6 +266,11 @@ int applySetting(char input[])
         }
     }
     return 0;
+}
+
+int countInput(char input[])
+{
+
 }
 
 int validateInput(char input[]) {
