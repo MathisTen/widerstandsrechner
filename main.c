@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <stdarg.h>
-#define DEBUG
+//#define DEBUG
 
 
 //Benutzeraufforderung zur Eingabe des Farb-String und speichert in input[], gibt die Anzahl der Wörter zurück
@@ -51,7 +51,7 @@ int* resistorDigits(int count, char input[]);
 int calcResistorValue(int count, char input[]);
 
 //gibt aus dem gegebenen Ring die Toleranz des Widerstands zurück
-float toleranceValue(char colour[]);
+float toleranceValue(int count, char input[]);
 
 //gibt aus dem gegebenen Ring den Temperaturkoeffizienten des Widerstands zurück
 int temperatureCoefficientValue(char colour[]);
@@ -114,10 +114,10 @@ int main() {
         }
 
         //Berechnung des Widerstandswert und der Toleranz
-        int resistorValue = calcResistorValue(count, input);
-        tolerance = toleranceValue(input, count);
+        resistorValue = calcResistorValue(count, input);
+        tolerance = toleranceValue(count, input);
         //Wenn sechs Ringe, dann auch den Temperaturkoeffizienten
-        if (count == 6) tempCoeff = temperatureCoefficientValue(input[40]);
+        if (count == 6) tempCoeff = temperatureCoefficientValue(&input[40]);
 
         //Ausgabe des Wiederstandswertes
         if(strcmp(language, "de")==0)printf("Widerstandswert:");
@@ -152,7 +152,7 @@ int main() {
 
         closeHtmlOutput(); 
     }  
-    
+
     return 0;
 }
 
@@ -646,7 +646,7 @@ int calcResistorValue(int count, char input[]) {
     }
 }
 
-float toleranceValue(char input[], int count)
+float toleranceValue(int count, char input[])
 {
     char colour[8];
     switch (count)
@@ -655,12 +655,12 @@ float toleranceValue(char input[], int count)
             return 20;
             break;
         case 4: 
-            strcpy(colour, input[24]);
+            strcpy(colour, &input[24]);
             break;
         case 5:
         case 6:
 
-            strcpy(colour, input[32]);
+            strcpy(colour, &input[32]);
             break;
         default:
             break;
