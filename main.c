@@ -54,7 +54,7 @@ int calcResistorValue(int count, char input[]);
 float toleranceValue(char colour[]);
 
 //gibt aus dem gegebenen Ring den Temperaturkoeffizienten des Widerstands zurück
-int temperatureCoefficient(char colour[]);
+int temperatureCoefficientValue(char colour[]);
 
 //Prüft, ob das Programm in der Konsole oder als CGI-Script aufgerufen wurde (0 als Konsole, 1 als CGI)
 int checkCall();
@@ -80,17 +80,20 @@ int main() {
     int env = checkCall();
     
     //Wenn als CGI-Script, dann starte HTML-Ausgabe
-    if(env)
-    {
-       initHtmlOutput();       
-    }else printf("Konsole - Start\n");
+    if(env) initHtmlOutput();       
+    else printf("Konsole - Start\n");
 
-    //Deklarieren der Variablen für den Input
+    //Deklarieren der Variable für den Input
     char input[48] = "";
     
     //Variable für die Anzahl der Wörter im eingegebenen String
     int count = 0;
     
+    //Variablen für den Widerstand, die Toleranz und den Koeffizienten
+    int resistorValue = 0;
+    float tolerance = 0;
+    int tempCoeff = 0;
+
     //Wenn in der Konsole, dann "normale" Ausführung
     if(!env)
     {
@@ -100,24 +103,40 @@ int main() {
         //Sortieren des Inputs, sodass jedes neue Wort an einer definierten Position beginnt
         sortInput(input, count);
     
-        //Prüfen der Logik der jeweiligen Ringe une erneute Eingabeaufforderung, wenn falsch
+        //Prüfen der Logik der jeweiligen Ringe und erneute Eingabeaufforderung, wenn falsch
         if(!checkResistorLogic(input, count)) 
         {
+            //Ausgabe der Fehlermeldung
             if(strcmp(language, "de")==0)printf("Bitte geben sie einen korrekten Widerstand ein.\n");
             else printf("Please enter a correct resistor.\n");
+            //Erneute Eingabeaufforderung
             count = getInputConsole(input);
         }
 
-        //Ausgabe des Widerstandswertes 
+        //Berechnung des Widerstandswert und der Toleranz
         int resistorValue = calcResistorValue(count, input);
+        tolerance = toleranceValue(input, count);
+        //Wenn sechs Ringe, dann auch den Temperaturkoeffizienten
+        if (count == 6) tempCoeff = temperatureCoefficientValue(input[40]);
+
+        //Ausgabe des Wiederstandswertes
         if(strcmp(language, "de")==0)printf("Widerstandswert:");
         else printf("Resistor Value:");
         printf("%i\n", resistorValue);
-    }else
-    {
 
+        //Wenn sechs Ringe, dann gib Koeffizienten aus
+        if(count == 6) printf("Temp: %d ppm/K\n", tempCoeff);
+        
+
+    }else 
+    {
+        //Sonst Ausführung als CGI-Script
+
+        //Abfrage der Eingabe aus den übergebenen Parametern
         count = getInputCGI(input);
+
         //Wenn Count 0, dann kein Korrekter String.
+        // TODO: Fehlerhafte Eingabe zurückmelden
         if(!count) return 0;  
 
         //Prüfen der Logik der jeweiligen Ringe une erneute Eingabeaufforderung mit Programmende, wenn falsch
@@ -130,21 +149,10 @@ int main() {
         //Ausgabe des Widerstandswertes 
         int resistorValue = calcResistorValue(count, input);
         printf("Der Widerstand beträgt %d Ohm.</br>");
-    }
 
-
-    if(count == 6) 
-    {
-        int tempCoeffValue = temperatureCoefficient(&input[40]);
-        printf("Temp: %d ppm/K\n", tempCoeffValue);
-    }
-
-    //Wenn als CGI-Script, dann beende HTML-Ausgabe vor Programmende
-    if(env)
-    {
-       closeHtmlOutput();       
-    }else printf("Konsole - Ende\n");
-
+        closeHtmlOutput(); 
+    }  
+    
     return 0;
 }
 
@@ -638,8 +646,26 @@ int calcResistorValue(int count, char input[]) {
     }
 }
 
-float toleranceValue(char colour[])
+float toleranceValue(char input[], int count)
 {
+    char colour[8];
+    switch (count)
+    {
+        case 3:
+            return 20;
+            break;
+        case 4: 
+            strcpy(colour, input[24]);
+            break;
+        case 5:
+        case 6:
+
+            strcpy(colour, input[32]);
+            break;
+        default:
+            break;
+    }
+
     int ringValue = colourValue(colour);
     switch(ringValue) 
     {
@@ -668,12 +694,13 @@ float toleranceValue(char colour[])
             return 0.05;
             break;
         default:
+            return 0;
             break;
     }
-    return 1;
+    return 0;
 }
 
-int temperatureCoefficient(char colour[])
+int temperatureCoefficientValue(char colour[])
 {
     int ringValue = colourValue(colour);
     switch(ringValue)
