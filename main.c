@@ -91,7 +91,7 @@ int main() {
     
     //Variablen für den Widerstand, die Toleranz und den Koeffizienten
     int resistorValue = 0;
-    float tolerance = 0;
+    float tolerance = 12;
     int tempCoeff = 0;
 
     //Wenn in der Konsole, dann "normale" Ausführung
@@ -104,13 +104,15 @@ int main() {
         sortInput(input, count);
     
         //Prüfen der Logik der jeweiligen Ringe und erneute Eingabeaufforderung, wenn falsch
-        if(!checkResistorLogic(input, count)) 
+        while(!checkResistorLogic(input, count)) 
         {
             //Ausgabe der Fehlermeldung
             if(strcmp(language, "de")==0)printf("Bitte geben sie einen korrekten Widerstand ein.\n");
             else printf("Please enter a correct resistor.\n");
             //Erneute Eingabeaufforderung
             count = getInputConsole(input);
+            //Erneutes Sortieren der Eingabe
+            sortInput(input, count);
         }
 
         //Berechnung des Widerstandswert und der Toleranz
@@ -122,7 +124,14 @@ int main() {
         //Ausgabe des Wiederstandswertes
         if(strcmp(language, "de")==0)printf("Widerstandswert:");
         else printf("Resistor Value:");
-        printf("%i\n", resistorValue);
+        printf("%d", resistorValue);
+        printf("Ohm\n");
+
+        //Ausgabe der Toleranz
+        if(strcmp(language, "de")==0)printf("Toleranz:");
+        else printf("Tolerance:");
+        printf("%.2f", tolerance);
+        printf("%%\n");
 
         //Wenn sechs Ringe, dann gib Koeffizienten aus
         if(count == 6) printf("Temp: %d ppm/K\n", tempCoeff);
@@ -550,6 +559,7 @@ int checkRing(int count, int number, char colour[]) {
     {
         switch (number)
         { case 1:
+            if(strcmp(colour, "schwarz") == 0 || strcmp(colour, "black") == 0 || strcmp(colour, "bk") == 0) return 0;
           case 2:
           case 3:
             // test für ring 1,2,3)
@@ -558,11 +568,14 @@ int checkRing(int count, int number, char colour[]) {
             break;
          case 4:
             // test ring 4
+            if(strcmp(colour, "violett") == 0 || strcmp(colour, "violet") == 0 || strcmp(colour, "vi") == 0) return 0;
             if( strcmp(colour, "grau") == 0 || strcmp(colour, "grey") == 0 || strcmp(colour, "gy") ==0) return 0;
             if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0) return 0;
             break;
          case 5:
          // test für ring 5
+            if(strcmp(colour, "gold") == 0 || strcmp(colour, "au") == 0) return 0;
+            if(strcmp(colour, "silber") == 0 || strcmp(colour, "silver") == 0 || strcmp(colour, "ag") == 0) return 0;
             if(strcmp(colour, "schwarz") == 0 || strcmp(colour, "black") == 0 || strcmp(colour, "bk") == 0) return 0;
             if(strcmp(colour, "orange") == 0 || strcmp(colour, "orange") == 0 || strcmp(colour, "og") == 0) return 0;
             if(strcmp(colour, "gelb") == 0 || strcmp(colour, "yellow") == 0 || strcmp(colour, "yl") == 0) return 0;
@@ -573,6 +586,8 @@ int checkRing(int count, int number, char colour[]) {
             if(strcmp(colour, "gold") == 0 || strcmp(colour, "au") == 0) return 0;
             if(strcmp(colour, "silber") == 0 || strcmp(colour, "silver") == 0 || strcmp(colour, "ag") == 0) return 0;
             if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0) return 0;
+            if( strcmp(colour, "grau") == 0 || strcmp(colour, "grey") == 0 || strcmp(colour, "gy") ==0) return 0;
+            if(strcmp(colour, "gruen") == 0 || strcmp(colour, "grün") == 0 || strcmp(colour, "green") == 0 || strcmp(colour, "gn") == 0) return 0;
          break;
         }
     
@@ -694,10 +709,11 @@ float toleranceValue(int count, char input[])
             return 0.05;
             break;
         default:
+        printf("default\n");
             return 0;
             break;
     }
-    return 0;
+    return 13;
 }
 
 int temperatureCoefficientValue(char colour[])
