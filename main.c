@@ -8,7 +8,7 @@
 //#define DEBUG
 
 
-//Benutzeraufforderung zur Eingabe des Farb-String und speichert in input[], gibt die Anzahl der Wörter zurück
+//Benutzeraufforderung zur Eingabe des Farb-String und speichert in input[], gibt die Anzahl der Woerter zurueck
 int getInputConsole(char input[]);
 
 //Auslesen der Eingabe 
@@ -17,19 +17,19 @@ int getInputCGI(char input[]);
 //Wandelt alle Benutzereingaben in Kleinbuchstaben um
 void stringToLower(char s[]);
 
-//Prüft, ob die Eingabe eine Einstellung ist
+//Prueft, ob die Eingabe eine Einstellung ist
 int checkForSetting(char input[]);
 
 //Wendet die Einstellung an
 int applySetting(char input[]);
 
-//Zählt die eingegebenen Farben
+//Zaehlt die eingegebenen Farben
 int countInput(char input[]);
 
-//Prüft den eingegeben String auf die korrekte Syntax und gibt als Rückgabewert die Anzahl der Farbwörter zurück, gibt "FALSE" zurück, wenn der String nicht korrekt ist
+//Prueft den eingegeben String auf die korrekte Syntax und gibt als Rueckgabewert die Anzahl der Farbwoerter zurueck, gibt "FALSE" zurueck, wenn der String nicht korrekt ist
 int validateConsoleInput(char input_string[]);
 
-//Prüft den ans CGI-Script übergebenen String auf die korrekte Syntax und gibt als Rückgabewert die Anzahl der Farbwörter zurück, gibt "FALSE" zurück, wenn der String nicht korrekt ist
+//Prueft den ans CGI-Script uebergebenen String auf die korrekte Syntax und gibt als Rueckgabewert die Anzahl der Farbwoerter zurueck, gibt "FALSE" zurueck, wenn der String nicht korrekt ist
 int validateHtmlInput(char input[]);
 
 //Sorts the input, so that every new Word is exactly at pos 8*colournumber
@@ -38,37 +38,37 @@ void sortInput(char input[], int count);
 //Splittet den Eingabestring um, die verschiedenen Farben werden in die einzelnen Variablen gespeichert
 void separate(char input[], int count, char colour1[], char colour2[], char colour3[], char colour4[], char colour5[], char colour6[]);
 
-//Gibt den Zahlenwert einer Farbe zurück
+//Gibt den Zahlenwert einer Farbe zurueck
 int colourValue(char colour[]);
 
-//Prüft, ob alle eingegebenen Farben an der jeweiligen Stelle möglich sind
+//Prueft, ob alle eingegebenen Farben an der jeweiligen Stelle moeglich sind
 int checkResistorLogic(char input[], int count);
 
-//Prüft je nach Ringnummer, ob die Farbe an dieser Position zulässig ist
+//Prueft je nach Ringnummer, ob die Farbe an dieser Position zulaessig ist
 int checkRing(int count,int number, char colour[]);
 
-//Wandelt bis zu sechs gegebene Wörter in die zugehörigen Ziffern um
+//Wandelt bis zu sechs gegebene Woerter in die zugehoerigen Ziffern um
 int* resistorDigits(int count, char input[]);
 
 //berechnet aus gegebenen Zahlen den Widerstandswert
 double calcResistorValue(int count, char input[]);
 
-//gibt aus dem gegebenen Ring die Toleranz des Widerstands zurück
+//gibt aus dem gegebenen Ring die Toleranz des Widerstands zurueck
 double toleranceValue(int count, char input[]);
 
-//gibt aus dem gegebenen Ring den Temperaturkoeffizienten des Widerstands zurück
+//gibt aus dem gegebenen Ring den Temperaturkoeffizienten des Widerstands zurueck
 int temperatureCoefficientValue(char colour[]);
 
 //Gibt die berechneten Werte in der Konsole aus
 void printConsoleResult(float resValue, float tolerance, int tempCoefficient);
 
-//Prüft, ob das Programm in der Konsole oder als CGI-Script aufgerufen wurde (0 als Konsole, 1 als CGI)
+//Prueft, ob das Programm in der Konsole oder als CGI-Script aufgerufen wurde (0 als Konsole, 1 als CGI)
 int checkCall();
 
 //Gibt den Widerstandswert auf der Konsole aus
 void printResValue(int resValue);
 
-//Initialisert den CGI-Output, um einen Output im Browser zu ermöglichen
+//Initialisert den CGI-Output, um einen Output im Browser zu ermoeglichen
 void initHtmlOutput();
 
 //Gibt den Widerstandswert als HTML aus
@@ -89,18 +89,18 @@ int main() {
     if(env) initHtmlOutput();       
     else printf("Konsole - Start\n");
 
-    //Deklarieren der Variable für den Input
+    //Deklarieren der Variable fuer den Input
     char input[48] = "";
     
-    //Variable für die Anzahl der Wörter im eingegebenen String
+    //Variable fuer die Anzahl der Woerter im eingegebenen String
     int count = 0;
     
-    //Variablen für den Widerstand, die Toleranz und den Koeffizienten
+    //Variablen fuer den Widerstand, die Toleranz und den Koeffizienten
     double resistorValue = 0;
     double tolerance = 12;
     int tempCoeff = 0;
 
-    //Wenn in der Konsole, dann "normale" Ausführung
+    //Wenn in der Konsole, dann "normale" Ausfuehrung
     if(!env)
     {
         //syntaktisch korrekte Eingabe abfragen und in input speichern
@@ -109,7 +109,7 @@ int main() {
         //Sortieren des Inputs, sodass jedes neue Wort an einer definierten Position beginnt
         sortInput(input, count);
     
-        //Prüfen der Logik der jeweiligen Ringe und erneute Eingabeaufforderung, wenn falsch
+        //Pruefen der Logik der jeweiligen Ringe und erneute Eingabeaufforderung, wenn falsch
         while(!checkResistorLogic(input, count)) 
         {
             //Ausgabe der Fehlermeldung
@@ -132,9 +132,9 @@ int main() {
         
     }else 
     {
-        //Sonst Ausführung als CGI-Script
+        //Sonst Ausfuehrung als CGI-Script
 
-        //Abfrage der Eingabe aus den übergebenen Parametern
+        //Abfrage der Eingabe aus den uebergebenen Parametern
         count = getInputCGI(input);
         printf("Count: %d</br>", count);
         printf("Input: ");
@@ -145,19 +145,19 @@ int main() {
         }
         printf("</br>");
         //Wenn Count 0, dann kein Korrekter String.
-        // TODO: Fehlerhafte Eingabe zurückmelden
+        // TODO: Fehlerhafte Eingabe zurueckmelden
         if(!count) return 0;  
 
-        //Prüfen der Logik der jeweiligen Ringe une erneute Eingabeaufforderung mit Programmende, wenn falsch
+        //Pruefen der Logik der jeweiligen Ringe une erneute Eingabeaufforderung mit Programmende, wenn falsch
         if(!checkResistorLogic(input, count)) 
         {
             printf("Keine Korrekte Eingabelogik. </br>");
-            printf("Bitte kehren sie zur <a href=\"test_cgi.html\" >Eingabeseite</a> zurück.</br>");
+            printf("Bitte kehren sie zur <a href=\"test_cgi.html\" >Eingabeseite</a> zurueck.</br>");
             return 0;
         }
         //Ausgabe des Widerstandswertes 
         resistorValue = calcResistorValue(count, input);
-        printf("Der Widerstand beträgt %lf Ohm.</br>", resistorValue);
+        printf("Der Widerstand betraegt %lf Ohm.</br>", resistorValue);
 
         closeHtmlOutput(); 
     }  
@@ -183,21 +183,21 @@ int getInputConsole(char input[]) {
         //Entfernen des Zeilenumbruchs am Ende der Eingabe und ersetzen durch '\0'
         input[strcspn(input, "\n")] = 0;
 
-        // Alle Wörter zu Kleinbuchstaben
+        // Alle Woerter zu Kleinbuchstaben
         stringToLower(input);
 
         count = 0;
 
-        //Wenn Eingabe ist Einstellung -> Einstellung ändern
+        //Wenn Eingabe ist Einstellung -> Einstellung aendern
         if(checkForSetting(input)) 
         {
-            //Einstellungen ändern ...
+            //Einstellungen aendern ...
             if(applySetting(input))
             {                
-                //Gültige Einstellung
+                //Gueltige Einstellung
                 if(strcmp(language, "de")==0)
                 {
-                    printf("Einstellungen geändert.\n");
+                    printf("Einstellungen geaendert.\n");
                     printf("Bitte geben Sie einen Eingabestring ein: ");
                 }else
                 {
@@ -206,11 +206,11 @@ int getInputConsole(char input[]) {
                 }
             }else
             {   
-                //Ungültige Einstellung
+                //Ungueltige Einstellung
                 if(strcmp(language, "de")==0)
                 {
-                    printf("Keine gültige Einstellung.\n");
-                    printf("Bitte geben Sie eine gültige Einstellung oder einen Eingabestring ein: ");
+                    printf("Keine gueltige Einstellung.\n");
+                    printf("Bitte geben Sie eine gueltige Einstellung oder einen Eingabestring ein: ");
                 }else
                 {
                     printf("No vaild setting.\n");
@@ -219,7 +219,7 @@ int getInputConsole(char input[]) {
             }
         }else
         {            
-            //Prüfen auf syntaktische Korrektheit und Zählen der Farben (0 = Fehler, 3-6 = Anzahl der eingegebenen Farbringe
+            //Pruefen auf syntaktische Korrektheit und Zaehlen der Farben (0 = Fehler, 3-6 = Anzahl der eingegebenen Farbringe
             count = validateConsoleInput(input);
 
             //Wenn fehlerhafte Eingabe, Aufforderung zur Korrektur ausgeben
@@ -285,7 +285,7 @@ int getInputCGI(char input[])
     if(count == 0) 
             {   
                 printf("Keine Korrekte Eingabe. </br>");
-                printf("Bitte kehren sie zur <a href=\"test_cgi.html\" >Eingabeseite</a> zurück.</br>");
+                printf("Bitte kehren sie zur <a href=\"test_cgi.html\" >Eingabeseite</a> zurueck.</br>");
                 return 0;
             }
     return count;
@@ -310,13 +310,13 @@ int applySetting(char input[])
     {
         if(input[5] == 'd' && input[6] == 'e')
         {
-            //Sprache in Deutsch geändert
+            //Sprache in Deutsch geaendert
             strcpy(language, "de");
             printf("Sprachauswahl: Deutsch.\n");
             return 1;
         }else if (input[5] == 'e' && input[6] == 'n')
         {
-            //Sprache in Englisch geändert
+            //Sprache in Englisch geaendert
             strcpy(language, "en");
             printf("Language: english\n");
             return 1;
@@ -344,7 +344,7 @@ int validateConsoleInput(char input[]) {
             printf("Durchlauf nummer: %i\n", count);
         #endif
         count++;
-        if(count > 6) { //Ungültig, wenn über sechs Farben
+        if(count > 6) { //Ungueltig, wenn ueber sechs Farben
             #ifdef DEBUG
                 printf("Zu viele\n");
             #endif
@@ -356,7 +356,7 @@ int validateConsoleInput(char input[]) {
            strcmp(token, "rot") == 0 || strcmp(token, "red") == 0 || strcmp(token, "rd") == 0 ||
            strcmp(token, "orange") == 0 || strcmp(token, "orange") == 0 || strcmp(token, "og") == 0 ||
            strcmp(token, "gelb") == 0 || strcmp(token, "yellow") == 0 || strcmp(token, "yl") == 0 ||
-           strcmp(token, "gruen") == 0 || strcmp(token, "grün") == 0 || strcmp(token, "green") == 0 || strcmp(token, "gn") == 0 ||
+           strcmp(token, "gruen") == 0 || strcmp(token, "gruen") == 0 || strcmp(token, "green") == 0 || strcmp(token, "gn") == 0 ||
            strcmp(token, "blau") == 0 || strcmp(token, "blue") == 0 || strcmp(token, "bu") == 0 ||
            strcmp(token, "violett") == 0 || strcmp(token, "violet") == 0 || strcmp(token, "vi") == 0 ||
            strcmp(token, "grau") == 0 || strcmp(token, "grey") == 0 || strcmp(token, "gy") == 0 ||
@@ -364,22 +364,22 @@ int validateConsoleInput(char input[]) {
            strcmp(token, "silber") == 0 || strcmp(token, "silver") == 0 || strcmp(token, "sr") == 0 ||
            strcmp(token, "gold") == 0 || strcmp(token, "au") == 0 )
         {
-            // Farbe ist gültig
+            // Farbe ist gueltig
             #ifdef DEBUG
-                printf("Farbe gültig\n");
+                printf("Farbe gueltig\n");
             #endif
         } else {
-            // Farbe ist ungültig
+            // Farbe ist ungueltig
             #ifdef DEBUG
                 printf("Token: %s\n", token);
-                printf("Farbe ungültig\n");
+                printf("Farbe ungueltig\n");
             #endif
             return false;
         }
         token = strtok(NULL, "-");
     }
 
-    if(count < 3) { //Ungültig, wenn unter drei Farben
+    if(count < 3) { //Ungueltig, wenn unter drei Farben
         #ifdef DEBUG
             printf("Zu wenige Farben\n");
             printf("Anzahl Farben: %i\n", count);
@@ -516,8 +516,8 @@ void separate(char input[],int count, char colour1[], char colour2[], char colou
 
 int colourValue(char colour[])
 {
-    //Ändern in zweidimensionales Array !!!
-    //ISO Norm für Farbabkürzungen
+    //aendern in zweidimensionales Array !!!
+    //ISO Norm fuer Farbabkuerzungen
     if(strcmp(colour, "schwarz") == 0 || strcmp(colour, "black") == 0 || strcmp(colour, "bk") == 0) return 0;
     if(strcmp(colour, "braun") == 0 || strcmp(colour, "brown") == 0 || strcmp(colour, "bn") == 0) return 1;
     if(strcmp(colour, "rot") == 0 || strcmp(colour, "red") == 0 || strcmp(colour, "rd") == 0 ) return 2;
@@ -581,17 +581,17 @@ int checkRing(int count, int number, char colour[]) {
         {
         case 1: 
         case 2:
-            //test für ring 1 und 2
+            //test fuer ring 1 und 2
             if(strcmp(colour, "gold") == 0 || strcmp(colour, "au") == 0) return 0;
             if(strcmp(colour, "silber") == 0 || strcmp(colour, "silver") == 0 || strcmp(colour, "ag") == 0) return 0;
             break;
         case 3:
-            // test für Ring 3
+            // test fuer Ring 3
             if( strcmp(colour, "grau") == 0 || strcmp(colour, "grey") == 0 || strcmp(colour, "gy") ==0) return 0;
             if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0) return 0;
             break;
         case 4:
-        // test für Ring 4
+        // test fuer Ring 4
         if(strcmp(colour, "schwarz") == 0 || strcmp(colour, "black") == 0 || strcmp(colour, "bk") == 0) return 0;
         if(strcmp(colour, "orange") == 0 || strcmp(colour, "orange") == 0 || strcmp(colour, "og") == 0) return 0;
         if(strcmp(colour, "gelb") == 0 || strcmp(colour, "yellow") == 0 || strcmp(colour, "yl") == 0) return 0;
@@ -606,7 +606,7 @@ int checkRing(int count, int number, char colour[]) {
             if(strcmp(colour, "schwarz") == 0 || strcmp(colour, "black") == 0 || strcmp(colour, "bk") == 0) return 0;
           case 2:
           case 3:
-            // test für ring 1,2,3)
+            // test fuer ring 1,2,3)
             if(strcmp(colour, "gold") == 0 || strcmp(colour, "au") == 0) return 0;
             if(strcmp(colour, "silber") == 0 || strcmp(colour, "silver") == 0 || strcmp(colour, "ag") == 0) return 0;
             break;
@@ -617,7 +617,7 @@ int checkRing(int count, int number, char colour[]) {
             if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0) return 0;
             break;
          case 5:
-         // test für ring 5
+         // test fuer ring 5
             if(strcmp(colour, "gold") == 0 || strcmp(colour, "au") == 0) return 0;
             if(strcmp(colour, "silber") == 0 || strcmp(colour, "silver") == 0 || strcmp(colour, "ag") == 0) return 0;
             if(strcmp(colour, "schwarz") == 0 || strcmp(colour, "black") == 0 || strcmp(colour, "bk") == 0) return 0;
@@ -626,12 +626,12 @@ int checkRing(int count, int number, char colour[]) {
             if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0) return 0;
          break;
          case 6:
-         // test für ring 6
+         // test fuer ring 6
             if(strcmp(colour, "gold") == 0 || strcmp(colour, "au") == 0) return 0;
             if(strcmp(colour, "silber") == 0 || strcmp(colour, "silver") == 0 || strcmp(colour, "ag") == 0) return 0;
             if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0) return 0;
             if( strcmp(colour, "grau") == 0 || strcmp(colour, "grey") == 0 || strcmp(colour, "gy") ==0) return 0;
-            if(strcmp(colour, "gruen") == 0 || strcmp(colour, "grün") == 0 || strcmp(colour, "green") == 0 || strcmp(colour, "gn") == 0) return 0;
+            if(strcmp(colour, "gruen") == 0 || strcmp(colour, "gruen") == 0 || strcmp(colour, "green") == 0 || strcmp(colour, "gn") == 0) return 0;
          break;
         }
     
@@ -650,7 +650,7 @@ int* resistorDigits(int count, char input[])
     ringvalues[1] = colourValue(&input[8]);
     ringvalues[2] = colourValue(&input[16]);
 
-    //Je nach Anzahl der Ringe werden die Ringe 4-6 auch in Zahlen übersetzt
+    //Je nach Anzahl der Ringe werden die Ringe 4-6 auch in Zahlen uebersetzt
     switch (count) {
         case 4:
             ringvalues[3] = colourValue(&input[24]);
@@ -849,7 +849,7 @@ void printConsoleResult(float resValue, float tolerance, int tempCoefficient)
 
 void initHtmlOutput()
 {
-    //initialisieren der Web-Oberfläche
+    //initialisieren der Web-Oberflaeche
     printf("Content-type: text/html\n\n");
     printf("<html>\n");
     printf("<head>\n");
@@ -905,9 +905,9 @@ void printHtmlResult(float resValue, float tolerance, int tempCoefficient)
     
     printf("Ohm\n");
 
-    if(!tolerance)printf("Die Toleranz beträgt 20%% </br>");
-    else printf("Die Toleranz beträgt %lf %%</br>", tolerance);
-    if(tempCoefficient)printf("Der Temperaturkoeffizient beträgt %d ppm/K </br>", tempCoefficient);
+    if(!tolerance)printf("Die Toleranz betraegt 20%% </br>");
+    else printf("Die Toleranz betraegt %lf %%</br>", tolerance);
+    if(tempCoefficient)printf("Der Temperaturkoeffizient betraegt %d ppm/K </br>", tempCoefficient);
     printf("</p>");
 }
 
@@ -925,9 +925,9 @@ int checkCall()
     if (term != NULL)
     {
         #ifdef DEBUG
-            //printf("Das Programm wurde über die Konsole gestartet.\n");
+            //printf("Das Programm wurde ueber die Konsole gestartet.\n");
         #endif
-        //Aufruf über die Konsole
+        //Aufruf ueber die Konsole
         return 0;
     }
     else if (gateway != NULL)
@@ -941,7 +941,7 @@ int checkCall()
     else
     {
         #ifdef DEBUG
-            //printf("Die Ausführungsumgebung konnte nicht erkannt werden.\n");
+            //printf("Die Ausfuehrungsumgebung konnte nicht erkannt werden.\n");
         #endif
         //Keine Ahnung, wie aufgerufen wurde, also Konsolenausgabe
         return 0;
