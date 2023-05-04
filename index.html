@@ -21,15 +21,16 @@
 			padding: 10px;
 			border: 1px solid #ccc;
 		}
-	</style>					
-	<script>																							<!-- Script Element beginnt hier für die nachfolgenden Anweisungen -->								
-
-			function setFieldColor(event) {																	<!-- Definition der Funktion, mit der Variable event -->							
+	</style>	
+	<!-- Script Element beginnt hier für die nachfolgenden Anweisungen -->					
+	<script>															
+	//Definition der Funktion, mit der Variable event							
+			function setFieldColor(event) {																								
 			var inputField = event.target;
-			var fieldValue = inputField.value.toLowerCase();														<!-- Eingegebener Farbwert wird in der fieldValue Variable übergeben -->
-			if (fieldValue === "schwarz"	||	fieldValue ==="black"	||	fieldValue === "bk"	||	fieldValue === "sw") {			<!-- Abfragen aller Farbeingaben, sowohl Englisch als auch Deutsch möglich -->
-				inputField.style.background = "black";															<!-- Hintergrund wird dem eingegebenen Farbnamen angepasst (Schwarzer Hintergrund = 																									weiße Schriftfarbe) -->
-				inputField.style.color = "white";																<!-- Schriftfarbe wird hier auf weiß gesetzt, sodass der einegegebene Text lesbar 																										bleibt -->
+			var fieldValue = inputField.value.toLowerCase();												//Eingegebener Farbwert wird in der fieldValue Variable übergeben -->
+			if (fieldValue === "schwarz"	||	fieldValue ==="black"	||	fieldValue === "bk"	||	fieldValue === "sw") {			//Abfragen aller Farbeingaben, sowohl Englisch als auch Deutsch möglich -->
+				inputField.style.background = "black";															//Hintergrund wird dem eingegebenen Farbnamen angepasst (Schwarzer Hintergrund = 																									weiße Schriftfarbe) -->
+				inputField.style.color = "white";																//Schriftfarbe wird hier auf weiß gesetzt, sodass der einegegebene Text lesbar 																										bleibt -->
 			} else if (fieldValue === "rot"	||	fieldValue === "red"	||	fieldValue === "rd") {
 				inputField.style.background = "red";
 				inputField.style.color = "white";
@@ -79,7 +80,7 @@
 </head>
 <body>															<!-- Enthält den dargestellten Inhalt eines HTML-Dokuments (Body-tag) -->
 	<h1>Herzlich Willkommen auf dem Widerstandsrechner von Mathis, Tim und Holger</h1>		<!-- Definierung der Überschrift -->
-	<form action="index.html" method="get">
+	<form action="a.cgi" method="get">
 		<label for="R1">Farbwiderstandsring 1:</label>							<!-- das label Element stellt eine Beschriftung für Formularelemente dar -->
 		<input type="text" id="R1" name="R1" oninput="setFieldColor(event)"><br><br>		<!-- type = Textform, id wird zugewiesen, name wird zugeweisen, ausgabe des eingebebenen Textes -->
 
