@@ -97,7 +97,7 @@ int main() {
     
     //Variablen fuer den Widerstand, die Toleranz und den Koeffizienten
     double resistorValue = 0;
-    double tolerance = 12;
+    double tolerance = 0;
     int tempCoeff = 0;
 
     //Wenn in der Konsole, dann "normale" Ausfuehrung
@@ -155,10 +155,17 @@ int main() {
             printf("Bitte kehren sie zur <a href=\"test_cgi.html\" >Eingabeseite</a> zurueck.</br>");
             return 0;
         }
-        //Ausgabe des Widerstandswertes 
-        resistorValue = calcResistorValue(count, input);
-        printf("Der Widerstand betraegt %lf Ohm.</br>", resistorValue);
 
+        //Berechnung des Widerstandswert und der Toleranz
+        resistorValue = calcResistorValue(count, input);
+        tolerance = toleranceValue(count, input);
+        //Wenn sechs Ringe, dann auch den Temperaturkoeffizienten
+        if (count == 6) tempCoeff = temperatureCoefficientValue(&input[40]);
+
+        //Ausgabe des Widerstandswertes 
+        printHtmlResult(resistorValue, tolerance, tempCoeff);
+
+        //Beenden der HTML-Ausgabe
         closeHtmlOutput(); 
     }  
 
@@ -903,10 +910,9 @@ void printHtmlResult(float resValue, float tolerance, int tempCoefficient)
             break;
     }
     
-    printf("Ohm\n");
-
+    printf("Ohm</br>");
     if(!tolerance)printf("Die Toleranz betraegt 20%% </br>");
-    else printf("Die Toleranz betraegt %lf %%</br>", tolerance);
+    else printf("Die Toleranz betraegt %.2lf %%</br>", tolerance);
     if(tempCoefficient)printf("Der Temperaturkoeffizient betraegt %d ppm/K </br>", tempCoefficient);
     printf("</p>");
 }
