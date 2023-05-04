@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <stdarg.h>
-//#define DEBUG
+#define DEBUG
 
 
 //Benutzeraufforderung zur Eingabe des Farb-String und speichert in input[], gibt die Anzahl der Wörter zurück
@@ -48,13 +48,16 @@ int checkRing(int count,int number, char colour[]);
 int* resistorDigits(int count, char input[]);
 
 //berechnet aus gegebenen Zahlen den Widerstandswert
-int calcResistorValue(int count, char input[]);
+double calcResistorValue(int count, char input[]);
 
 //gibt aus dem gegebenen Ring die Toleranz des Widerstands zurück
-float toleranceValue(int count, char input[]);
+double toleranceValue(int count, char input[]);
 
 //gibt aus dem gegebenen Ring den Temperaturkoeffizienten des Widerstands zurück
 int temperatureCoefficientValue(char colour[]);
+
+//Gibt die berechneten Werte in der Konsole aus
+void printConsoleResult(float resValue, float tolerance, int tempCoefficient);
 
 //Prüft, ob das Programm in der Konsole oder als CGI-Script aufgerufen wurde (0 als Konsole, 1 als CGI)
 int checkCall();
@@ -66,7 +69,7 @@ void printResValue(int resValue);
 void initHtmlOutput();
 
 //Gibt den Widerstandswert als HTML aus
-void printHtmlResult(int resValue, float tolerance, int tempCoefficient);
+void printHtmlResult(float resValue, float tolerance, int tempCoefficient);
 
 //Beendet den CGI-Output
 void closeHtmlOutput();
@@ -90,8 +93,8 @@ int main() {
     int count = 0;
     
     //Variablen für den Widerstand, die Toleranz und den Koeffizienten
-    int resistorValue = 0;
-    float tolerance = 12;
+    double resistorValue = 0;
+    double tolerance = 12;
     int tempCoeff = 0;
 
     //Wenn in der Konsole, dann "normale" Ausführung
@@ -121,22 +124,9 @@ int main() {
         //Wenn sechs Ringe, dann auch den Temperaturkoeffizienten
         if (count == 6) tempCoeff = temperatureCoefficientValue(&input[40]);
 
-        //Ausgabe des Wiederstandswertes
-        if(strcmp(language, "de")==0)printf("Widerstandswert:");
-        else printf("Resistor Value:");
-        printf("%d", resistorValue);
-        printf("Ohm\n");
-
-        //Ausgabe der Toleranz
-        if(strcmp(language, "de")==0)printf("Toleranz:");
-        else printf("Tolerance:");
-        printf("%.2f", tolerance);
-        printf("%%\n");
-
-        //Wenn sechs Ringe, dann gib Koeffizienten aus
-        if(count == 6) printf("Temp: %d ppm/K\n", tempCoeff);
+        //Konsolenausgabe
+        printConsoleResult(resistorValue, tolerance, tempCoeff);
         
-
     }else 
     {
         //Sonst Ausführung als CGI-Script
@@ -156,8 +146,8 @@ int main() {
             return 0;
         }
         //Ausgabe des Widerstandswertes 
-        int resistorValue = calcResistorValue(count, input);
-        printf("Der Widerstand beträgt %d Ohm.</br>");
+        resistorValue = calcResistorValue(count, input);
+        printf("Der Widerstand beträgt %lf Ohm.</br>", resistorValue);
 
         closeHtmlOutput(); 
     }  
@@ -330,7 +320,7 @@ int validateInput(char input[]) {
            strcmp(token, "violett") == 0 || strcmp(token, "violet") == 0 || strcmp(token, "vi") == 0 ||
            strcmp(token, "grau") == 0 || strcmp(token, "grey") == 0 || strcmp(token, "gy") == 0 ||
            strcmp(token, "weiss") == 0 || strcmp(token, "white") == 0 || strcmp(token, "wh") == 0 ||
-           strcmp(token, "silber") == 0 || strcmp(token, "silver") == 0 || strcmp(token, "ag") == 0 ||
+           strcmp(token, "silber") == 0 || strcmp(token, "silver") == 0 || strcmp(token, "sr") == 0 ||
            strcmp(token, "gold") == 0 || strcmp(token, "au") == 0 )
         {
             // Farbe ist gültig
@@ -484,8 +474,8 @@ int colourValue(char colour[])
     if(strcmp(colour, "violett") == 0 || strcmp(colour, "violet") == 0 || strcmp(colour, "vi") == 0 ) return 7;
     if(strcmp(colour, "grau") == 0 || strcmp(colour, "grey") == 0 || strcmp(colour, "gy") == 0 ) return 8;
     if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0 ) return 9;
-    if(strcmp(colour, "silber") == 0 || strcmp(colour, "silver") == 0 || strcmp(colour, "sr") == 0 ) return -1;
-    if(strcmp(colour, "gold") == 0 || strcmp(colour, "gd") == 0 ) return -10;
+    if(strcmp(colour, "silber") == 0 || strcmp(colour, "silver") == 0 || strcmp(colour, "sr") == 0 ) return -2;
+    if(strcmp(colour, "gold") == 0 || strcmp(colour, "gd") == 0 ) return -1;
     return 100;
 }
 
@@ -624,13 +614,12 @@ int* resistorDigits(int count, char input[])
     return ringvalues;
 }
 
-int calcResistorValue(int count, char input[]) {
+double calcResistorValue(int count, char input[]) {
 
     #ifdef DEBUG
         printf("Calculating...\n");
     #endif
     int* values = resistorDigits(count, input);
-
     #ifdef DEBUG
         printf("Calculating 2...\n");
         for(int i = 0; i<count;i++) {
@@ -648,7 +637,7 @@ int calcResistorValue(int count, char input[]) {
                 printf("Case 4\n");
             #endif    
             multiplicator = pow(10, (double)values[2]);
-            return (values[0]*10+values[1]*1)*(int)multiplicator;
+            return (values[0]*10+values[1]*1)*multiplicator;
             break;
         case 5:
         case 6:
@@ -661,7 +650,7 @@ int calcResistorValue(int count, char input[]) {
     }
 }
 
-float toleranceValue(int count, char input[])
+double toleranceValue(int count, char input[])
 {
     char colour[8];
     switch (count)
@@ -748,6 +737,61 @@ int temperatureCoefficientValue(char colour[])
 
 }
 
+void printConsoleResult(float resValue, float tolerance, int tempCoefficient)
+{
+    
+    int multiplicator = 0;
+    while(resValue > 1000 || resValue < 1)
+    {
+        if(resValue >1000)
+        {
+            resValue /= 1000;
+            multiplicator ++;
+        }
+        if(resValue < 1)
+        {
+            resValue *= 1000;
+            multiplicator --;            
+        }
+    }
+    
+    //Ausgabe des Wiederstandswertes
+    if(strcmp(language, "de")==0)printf("Widerstandswert:");
+    else printf("Resistor Value:");
+    printf("%.lf", resValue);
+    
+    switch (multiplicator)
+    {
+        case -1:
+            printf("m");
+            break;
+        case 0:
+            break;
+        case 1:
+            printf("k");
+            break;
+        case 2:
+            printf("M");
+            break;
+        case 3:
+            printf("G");
+            break;
+        default:
+            break;
+    }
+    
+    printf("Ohm\n");
+
+    //Ausgabe der Toleranz
+    if(strcmp(language, "de")==0)printf("Toleranz:");
+    else printf("Tolerance:");
+    printf("%.2f", tolerance);
+    printf("%%\n");
+
+    //Wenn sechs Ringe, dann gib Koeffizienten aus
+    if(tempCoefficient != 0) printf("Temp: %d ppm/K\n", tempCoefficient);
+}
+
 void initHtmlOutput()
 {
     //initialisieren der Web-Oberfläche
@@ -760,13 +804,54 @@ void initHtmlOutput()
     printf("<h1>Hallo Holger!</h1>\n");
 }
 
-void printHtmlResult(int resValue, float tolerance, int tempCoefficient)
+void printHtmlResult(float resValue, float tolerance, int tempCoefficient)
 {
     //Ausgabe der HTML-Informationen und des Ergebnisses der Widerstandsberechnung
+    int multiplicator = 0;
+    while(resValue > 1000 || resValue < 1)
+    {
+        if(resValue >1000)
+        {
+            resValue /= 1000;
+            multiplicator ++;
+        }
+        if(resValue < 1)
+        {
+            resValue *= 1000;
+            multiplicator --;            
+        }
+    }
+
     printf("<p>");
-    printf("Der Widerstand beträgt %d Ohm </br>", resValue);
+    //Ausgabe des Wiederstandswertes
+    if(strcmp(language, "de")==0)printf("Widerstandswert:");
+    else printf("Resistor Value:");
+    printf("%.3lf", resValue);
+    
+    switch (multiplicator)
+    {
+        case -1:
+            printf("m");
+            break;
+        case 0:
+            break;
+        case 1:
+            printf("k");
+            break;
+        case 2:
+            printf("M");
+            break;
+        case 3:
+            printf("G");
+            break;
+        default:
+            break;
+    }
+    
+    printf("Ohm\n");
+
     if(!tolerance)printf("Die Toleranz beträgt 20%% </br>");
-    else printf("Die Toleranz beträgt %d %%</br>", tolerance);
+    else printf("Die Toleranz beträgt %lf %%</br>", tolerance);
     if(tempCoefficient)printf("Der Temperaturkoeffizient beträgt %d ppm/K </br>", tempCoefficient);
     printf("</p>");
 }
