@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <stdarg.h>
-#define DEBUG
+//#define DEBUG
 
 
 //Benutzeraufforderung zur Eingabe des Farb-String und speichert in input[], gibt die Anzahl der Wörter zurück
@@ -27,7 +27,10 @@ int applySetting(char input[]);
 int countInput(char input[]);
 
 //Prüft den eingegeben String auf die korrekte Syntax und gibt als Rückgabewert die Anzahl der Farbwörter zurück, gibt "FALSE" zurück, wenn der String nicht korrekt ist
-int validateInput(char input_string[]);
+int validateConsoleInput(char input_string[]);
+
+//Prüft den ans CGI-Script übergebenen String auf die korrekte Syntax und gibt als Rückgabewert die Anzahl der Farbwörter zurück, gibt "FALSE" zurück, wenn der String nicht korrekt ist
+int validateHtmlInput(char input[]);
 
 //Sorts the input, so that every new Word is exactly at pos 8*colournumber
 void sortInput(char input[], int count);
@@ -133,7 +136,14 @@ int main() {
 
         //Abfrage der Eingabe aus den übergebenen Parametern
         count = getInputCGI(input);
-
+        printf("Count: %d</br>", count);
+        printf("Input: ");
+        for(int i = 0; i < 48; i++)
+        {
+            printf("%c", input[i]);
+            if((i + 1) % 8 == 0)printf("</br>");
+        }
+        printf("</br>");
         //Wenn Count 0, dann kein Korrekter String.
         // TODO: Fehlerhafte Eingabe zurückmelden
         if(!count) return 0;  
@@ -210,7 +220,7 @@ int getInputConsole(char input[]) {
         }else
         {            
             //Prüfen auf syntaktische Korrektheit und Zählen der Farben (0 = Fehler, 3-6 = Anzahl der eingegebenen Farbringe
-            count = validateInput(input);
+            count = validateConsoleInput(input);
 
             //Wenn fehlerhafte Eingabe, Aufforderung zur Korrektur ausgeben
             if(count == 0) 
@@ -234,12 +244,43 @@ int getInputCGI(char input[])
     if (query == NULL) return 0;
 
     printf("Eingegebener Query:</br>%s</br>", query);
+    /*
     input[7] = '-';
     input[15] = '-';
     input[23] = '-';
-    sscanf(query, "R1=%[^&]&R2=%[^&]&R3=%[^&]&R4=%[^&]&R5=%[^&]&R6=%s", &input[0], &input[8], &input[16], &input[24], &input[32], &input[40]); 
+    */
+   for(int i = 0; i < 48; i++)
+   {
+    input[i] = '\0';
+   }
+   
+    sscanf(query, "R1=%7[^&]&R2=%7[^&]&R3=%7[^&]&R4=%7[^&]&R5=%7[^&]&R6=%7s", &input[0], &input[8], &input[16], &input[24], &input[32], &input[40]); 
+    for(int i = 0; i < 48; i++)
+        {
+            if(input[i] == '\0')
+            {
+                printf(".");
+            }else{
+                printf("%c", input[i]);
+            }
+            
+            //if((i + 1) % 8 == 0)printf("</br>");
+        }
+        printf("</br>");
     stringToLower(input);
-    count = validateInput(input);
+    count = validateHtmlInput(input);
+
+    for(int i = 0; i < 48; i++)
+    {
+        if(input[i] == '\0')
+            {
+                printf(" ");
+            }else{
+                printf("%c", input[i]);
+            }
+        //if((i + 1) % 8 == 0)printf("</br>");
+    }
+    printf("</br>");
 
     if(count == 0) 
             {   
@@ -289,7 +330,7 @@ int countInput(char input[])
 
 }
 
-int validateInput(char input[]) {
+int validateConsoleInput(char input[]) {
 
     char *token;
     char tmpInput[48];
@@ -349,6 +390,19 @@ int validateInput(char input[]) {
         printf("Anzahl: %i\n", count);
     #endif
     return count;
+}
+
+int validateHtmlInput(char input[])
+{
+    int count = 0;
+    for (int i = 0; i < 6; i++)
+    {
+        if(input[(8*i)+7] != '\0') return false;
+        if(input[8*i] != '\0')count++;
+
+    }
+    if (count<3)return false;
+    else return count;
 }
 
 void sortInput(char input[], int count) {
@@ -620,6 +674,7 @@ double calcResistorValue(int count, char input[]) {
         printf("Calculating...\n");
     #endif
     int* values = resistorDigits(count, input);
+
     #ifdef DEBUG
         printf("Calculating 2...\n");
         for(int i = 0; i<count;i++) {
