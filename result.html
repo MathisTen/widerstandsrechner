@@ -29,20 +29,26 @@
 	</head>
 
 	<body>
-		<h1>Dies wird der Widerstandsrechner von Mathis, Tim und Holger</h1>
-		<p class="output" id="output">Der errechnete Widerstand beträgt 25 Ohm</p>
+		<h1>Dies ist der Widerstandsrechner von Mathis, Tim und Holger</h1>
+		<script>
+			const urlParams = new URLSearchParams(window.location.search);
+			const resistance = urlParams.get('R');
+			const tolerance = urlParams.get('T');
+			const tempCoefficient = urlParams.get('tK');
 
-		<form>
-			<label for="color">Farbe für den Kasten wählen:</label>
-			<input type="color" id="color" name="color" onchange="changeColor()">
-
-			<script>
-				function changeColor() {
-					var output = document.getElementById('output');
-					var color = document.getElementById('color').value;
-					output.style.backgroundColor = color;
-				}
-			</script>
-		</form>
+			// Text generieren
+			let text = `Der Widerstand betraegt ${resistance} Ohm, die Toleranz ist ${tolerance}% `;
+			
+			if (parseInt(tempCoefficient) != 0) {
+  				text += ` und der Temperaturkoeffizient betraegt ${tempCoefficient}ppm.`;
+			} 
+			else {
+  				text += '.';
+			}
+			
+			// Text ausgeben
+			document.write(text);
+			
+		</script>
 	</body>
 </html>
