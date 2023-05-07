@@ -64,6 +64,9 @@ void initHtmlOutput();
 //Gibt den Widerstandswert als HTML aus
 void printHtmlResult(float resValue, float tolerance, int tempCoefficient);
 
+//Gibt die Fehlermeldung im Browser aus
+void printHtmlError();
+
 //Beendet den CGI-Output
 void closeHtmlOutput();
 
@@ -124,40 +127,27 @@ int main() {
 
         //Konsolenausgabe
         printConsoleResult(resistorValue, tolerance, tempCoeff);
-        printHtmlResult(resistorValue, tolerance, tempCoeff);
         
     }else 
     {
         //Sonst Ausfuehrung als CGI-Script
 
         //Abfrage der Eingabe aus den uebergebenen Parametern
-        count = getInputCGI(input);
-        /*
-        printf("Count: %d</br>", count);
-        printf("Input: ");
-        for(int i = 0; i < 48; i++)
-        {
-            printf("%c", input[i]);
-            if((i + 1) % 8 == 0)printf("</br>");
-        }
-        printf("</br>");
-        */
-        //Wenn Count 0, dann kein Korrekter String.
-        // TODO: Fehlerhafte Eingabe zurueckmelden
-        if(!count) return 0;  
+        //printHtmlError();
 
-        //Pruefen der Logik der jeweiligen Ringe une erneute Eingabeaufforderung mit Programmende, wenn falsch
+        count = getInputCGI(input);
+        
+        if(!count) 
+        {
+            printHtmlError();
+            closeHtmlOutput();
+            return 0;  
+        }
+
+        //Pruefen der Logik der jeweiligen Ringe und erneute Eingabeaufforderung mit Programmende, wenn falsch
         if(!checkResistorLogic(input, count)) 
         {
-            
-            printf("Content-type: text/html\n\n");
-            printf("<html>\n");
-            printf("<head>\n");
-            printf("<title>Fehler bei der Eingabe</title>\n");
-            printf("</head>\n");
-            printf("<body>\n");
-            printf("Keine Korrekte Eingabelogik. </br>");
-            printf("Bitte kehren sie zur <a href=\"index.html\" >Eingabeseite</a> zurueck.</br>");
+            printHtmlError();
             closeHtmlOutput();
             return 0;
         }
@@ -233,12 +223,13 @@ int getInputConsole(char input[]) {
 
     int count = 0;
 
-    //Aufforderung zur Eingabe
-    if(strcmp(language, "de")==0)printf("Bitte geben Sie den Eingabestring ein: ");
-    else printf("Please enter your input-string: ");
-
     //Eingabe abfragen
     do {
+
+        //Aufforderung zur Eingabe
+        if(strcmp(language, "de")==0)printf("Bitte geben Sie den Eingabestring ein: ");
+        else printf("Please enter your input-string: ");
+
         //Speichern der Eingabe aus stdin in input (max. 48 Zeichen)
         fgets(input, 48, stdin);
 
@@ -286,8 +277,6 @@ int getInputCGI(char input[])
     
     if(count == 0) 
             {   
-                printf("Keine Korrekte Eingabe. </br>");
-                printf("Bitte kehren sie zur <a href=\"test_cgi.html\" >Eingabeseite</a> zurueck.</br>");
                 return 0;
             }
     return count;
@@ -365,12 +354,21 @@ int validateConsoleInput(char input[]) {
 int validateHtmlInput(char input[])
 {
     int count = 0;
+    int empty = 0;
     for (int i = 0; i < 6; i++)
     {
         if(input[(8*i)+7] != '\0') return false;
-        if(input[8*i] != '\0')count++;
-
     }
+    for (int i = 0; i < 6; i++)
+    {
+        if(input[8*i] != '\0')
+        {
+            if(empty == 1)return false;
+            count++;
+        }
+        else empty = 1;
+    }
+
     if (count<3)return false;
     else return count;
 }
@@ -486,7 +484,6 @@ void separate(char input[],int count, char colour1[], char colour2[], char colou
 
 int colourValue(char colour[])
 {
-    //aendern in zweidimensionales Array !!!
     //ISO Norm fuer Farbabkuerzungen
     if(strcmp(colour, "schwarz") == 0 || strcmp(colour, "black") == 0 || strcmp(colour, "bk") == 0) return 0;
     if(strcmp(colour, "braun") == 0 || strcmp(colour, "brown") == 0 || strcmp(colour, "bn") == 0) return 1;
@@ -546,6 +543,7 @@ int checkRing(int count, int number, char colour[]) {
 
     if ( count == 3 || count == 4 )
     { 
+        if(strcmp(colour, "") == 0) return 0;
         switch( number)
         {
         case 1: 
@@ -569,6 +567,7 @@ int checkRing(int count, int number, char colour[]) {
         
     }else if(count == 5 || count == 6 )
     {
+        if(strcmp(colour, "") == 0) return 0;
         switch (number)
         { case 1:
             if(strcmp(colour, "schwarz") == 0 || strcmp(colour, "black") == 0 || strcmp(colour, "bk") == 0) return 0;
@@ -885,6 +884,18 @@ void printHtmlResult(float resValue, float tolerance, int tempCoefficient)
     printf("Status: 302 Found\n\n");
     printf("<html><head><title>Weiterleitung</title></head>\n");
     printf("<body><h1>Ergebnisse werden berechnet</h1>\n");
+}
+
+void printHtmlError()
+{
+    //printf("Content-Type: text/html\n"); 
+    printf("\n<html>\n");
+    printf("<head>\n");
+    printf("<title>Fehler bei der Eingabe</title>\n");
+    printf("</head>\n");
+    printf("<body>\n");
+    printf("Keine Korrekte Eingabelogik. </br>");
+    printf("Bitte kehren sie zur <a href=\"index.html\" >Eingabeseite</a> zurueck.</br>");
 }
 
 void closeHtmlOutput()
