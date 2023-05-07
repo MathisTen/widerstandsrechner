@@ -115,8 +115,10 @@ int main() {
             //Ausgabe der Fehlermeldung
             if(strcmp(language, "de")==0)printf("Bitte geben sie einen korrekten Widerstand ein.\n");
             else printf("Please enter a correct resistor.\n");
+
             //Erneute Eingabeaufforderung
             count = getInputConsole(input);
+
             //Erneutes Sortieren der Eingabe
             sortInput(input, count);
         }
@@ -124,19 +126,16 @@ int main() {
         //Berechnung des Widerstandswert und der Toleranz
         resistorValue = calcResistorValue(count, input);
         tolerance = toleranceValue(count, input);
+
         //Wenn sechs Ringe, dann auch den Temperaturkoeffizienten
         if (count == 6) tempCoeff = temperatureCoefficientValue(&input[40]);
 
         //Konsolenausgabe
         printConsoleResult(resistorValue, tolerance, tempCoeff);
         
-    }else 
+    }else   //Sonst Ausfuehrung als CGI-Script
     {
-        //Sonst Ausfuehrung als CGI-Script
-
         //Abfrage der Eingabe aus den uebergebenen Parametern
-        //printHtmlError();
-
         count = getInputCGI(input);
         
         if(!count) 
@@ -187,7 +186,7 @@ void setLanguage(char language[])
         #endif
         strcpy(language, "en");
     }
-    //setLocale(LC_ALL, "");
+    setlocale(LC_ALL, getenv( "LANG" ));
 }
 
 int checkCall()
@@ -286,8 +285,7 @@ int getInputCGI(char input[])
 }
 
 void stringToLower(char s[]) {
-    int i;
-    for(i = 0; s[i] != '\0'; i++) {
+    for(int i = 0; s[i] != '\0'; i++) {
         s[i] = tolower(s[i]);
     }
 }
