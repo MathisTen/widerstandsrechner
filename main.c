@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <locale.h>
+
 //#define DEBUG
 
 //Wendet die Spracheinstellungen je nach Anwendersystem an
@@ -185,6 +187,7 @@ void setLanguage(char language[])
         #endif
         strcpy(language, "en");
     }
+    //setLocale(LC_ALL, "");
 }
 
 int checkCall()
