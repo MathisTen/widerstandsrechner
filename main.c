@@ -280,35 +280,10 @@ int getInputCGI(char input[])
     }
    
     sscanf(query, "R1=%7[^&]&R2=%7[^&]&R3=%7[^&]&R4=%7[^&]&R5=%7[^&]&R6=%7s", &input[0], &input[8], &input[16], &input[24], &input[32], &input[40]); 
-    /*
-    for(int i = 0; i < 48; i++)
-        {
-            if(input[i] == '\0')
-            {
-                printf(".");
-            }else{
-                printf("%c", input[i]);
-            }
-            
-            //if((i + 1) % 8 == 0)printf("</br>");
-        }
-        printf("</br>");
-    */
+    
     stringToLower(input);
     count = validateHtmlInput(input);
-    /*
-    for(int i = 0; i < 48; i++)
-    {
-        if(input[i] == '\0')
-            {
-                printf(" ");
-            }else{
-                printf("%c", input[i]);
-            }
-        //if((i + 1) % 8 == 0)printf("</br>");
-    }
-    printf("</br>");
-    */
+    
     if(count == 0) 
             {   
                 printf("Keine Korrekte Eingabe. </br>");
@@ -569,21 +544,19 @@ int checkResistorLogic(char input[], int count)
 
 int checkRing(int count, int number, char colour[]) {
 
-    //Holger
     if ( count == 3 || count == 4 )
     { 
         switch( number)
         {
         case 1: 
+            if(strcmp(colour, "schwarz") == 0 || strcmp(colour, "black") == 0 || strcmp(colour, "bk") == 0) return 0;
         case 2:
             //test fuer ring 1 und 2
             if(strcmp(colour, "gold") == 0 || strcmp(colour, "au") == 0) return 0;
             if(strcmp(colour, "silber") == 0 || strcmp(colour, "silver") == 0 || strcmp(colour, "ag") == 0) return 0;
             break;
         case 3:
-            // test fuer Ring 3
-            if( strcmp(colour, "grau") == 0 || strcmp(colour, "grey") == 0 || strcmp(colour, "gy") ==0) return 0;
-            if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0) return 0;
+            // test fuer Ring 3: Alle Farben erlaubt
             break;
         case 4:
         // test fuer Ring 4
@@ -723,10 +696,10 @@ double toleranceValue(int count, char input[])
     int ringValue = colourValue(colour);
     switch(ringValue) 
     {
-        case -10:
+        case -1:
             return 5;
             break;
-        case -1:
+        case -2:
             return 10;
             break;
         case 1:
@@ -874,18 +847,18 @@ void printHtmlResult(float resValue, float tolerance, int tempCoefficient)
     switch (multiplicator)
     {
         case -1:
-            strcat(output, "m");
+            strcat(output, " m");
             break;
         case 0:
             break;
         case 1:
-            strcat(output, "k");
+            strcat(output, " k");
             break;
         case 2:
-            strcat(output, "M");
+            strcat(output, " M");
             break;
         case 3:
-            strcat(output, "G");
+            strcat(output, " G");
             break;
         default:
             break;

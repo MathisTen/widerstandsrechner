@@ -1,54 +1,44 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Widerstandsrechner v0.0</title>
+<head>
+    <meta charset="UTF-8">
+    <title>Widerstandsrechner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        p {
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Widerstandsrechner</h1>
+    
+    <script>
+        // URL-Parameter auslesen
+        const urlParams = new URLSearchParams(window.location.search);
+        const resistance = urlParams.get('R');
+        const tolerance = urlParams.get('T');
+        const tempCoefficient = urlParams.get('tK');
 
-		<style>
-			body {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				flex-direction: column;
-				margin: 0;
-			}
+        // Text generieren
+        let text = `Der Widerstand beträgt ${resistance}Ohm, die Toleranz ist ${tolerance}%`;
 
-			h1 {
-				min-height: 100px;
-				margin-top: 0;
-			}
+        if (tempCoefficient !== null && parseInt(tempCoefficient) !== 0) {
+            text += ` und der Temperaturkoeffizient beträgt ${tempCoefficient} ppm`;
+        }
 
-			.output {
-				font-size: 24px;
-				font-weight: bold;
-				margin-top: 20px;
-				border: 1px solid #000;
-				padding: 10px;
-				background-color: white; /* Hintergrundfarbe des Ausgabefelds */
-			}
-		</style>
-	</head>
-
-	<body>
-		<h1>Dies ist der Widerstandsrechner von Mathis, Tim und Holger</h1>
-		<script>
-			const urlParams = new URLSearchParams(window.location.search);
-			const resistance = urlParams.get('R');
-			const tolerance = urlParams.get('T');
-			const tempCoefficient = urlParams.get('tK');
-
-			// Text generieren
-			let text = `Der Widerstand betraegt ${resistance} Ohm, die Toleranz ist ${tolerance}% `;
-			
-			if (parseInt(tempCoefficient) != 0) {
-  				text += ` und der Temperaturkoeffizient betraegt ${tempCoefficient}ppm.`;
-			} 
-			else {
-  				text += '.';
-			}
-			
-			// Text ausgeben
-			document.write(text);
-			
-		</script>
-	</body>
+        // Text ausgeben
+        const outputElement = document.createElement('p');
+        outputElement.textContent = text;
+        document.body.appendChild(outputElement);
+    </script>
+</body>
 </html>
