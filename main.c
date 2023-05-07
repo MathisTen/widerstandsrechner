@@ -5,10 +5,13 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <stdarg.h>
-#define DEBUG
+//#define DEBUG
 
 //Wendet die Spracheinstellungen je nach Anwendersystem an
 void setLanguage(char language[]);
+
+//Prueft, ob das Programm in der Konsole oder als CGI-Script aufgerufen wurde (0 als Konsole, 1 als CGI)
+int checkCall();
 
 //Benutzeraufforderung zur Eingabe des Farb-String und speichert in input[], gibt die Anzahl der Woerter zurueck
 int getInputConsole(char input[]);
@@ -54,12 +57,6 @@ int temperatureCoefficientValue(char colour[]);
 
 //Gibt die berechneten Werte in der Konsole aus
 void printConsoleResult(float resValue, float tolerance, int tempCoefficient);
-
-//Prueft, ob das Programm in der Konsole oder als CGI-Script aufgerufen wurde (0 als Konsole, 1 als CGI)
-int checkCall();
-
-//Gibt den Widerstandswert auf der Konsole aus
-void printResValue(int resValue);
 
 //Initialisert den CGI-Output, um einen Output im Browser zu ermoeglichen
 void initHtmlOutput();
@@ -127,6 +124,7 @@ int main() {
 
         //Konsolenausgabe
         printConsoleResult(resistorValue, tolerance, tempCoeff);
+        printHtmlResult(resistorValue, tolerance, tempCoeff);
         
     }else 
     {
@@ -134,6 +132,7 @@ int main() {
 
         //Abfrage der Eingabe aus den uebergebenen Parametern
         count = getInputCGI(input);
+        /*
         printf("Count: %d</br>", count);
         printf("Input: ");
         for(int i = 0; i < 48; i++)
@@ -142,6 +141,7 @@ int main() {
             if((i + 1) % 8 == 0)printf("</br>");
         }
         printf("</br>");
+        */
         //Wenn Count 0, dann kein Korrekter String.
         // TODO: Fehlerhafte Eingabe zurueckmelden
         if(!count) return 0;  
@@ -149,8 +149,16 @@ int main() {
         //Pruefen der Logik der jeweiligen Ringe une erneute Eingabeaufforderung mit Programmende, wenn falsch
         if(!checkResistorLogic(input, count)) 
         {
+            
+            printf("Content-type: text/html\n\n");
+            printf("<html>\n");
+            printf("<head>\n");
+            printf("<title>Fehler bei der Eingabe</title>\n");
+            printf("</head>\n");
+            printf("<body>\n");
             printf("Keine Korrekte Eingabelogik. </br>");
-            printf("Bitte kehren sie zur <a href=\"test_cgi.html\" >Eingabeseite</a> zurueck.</br>");
+            printf("Bitte kehren sie zur <a href=\"index.html\" >Eingabeseite</a> zurueck.</br>");
+            closeHtmlOutput();
             return 0;
         }
 
@@ -170,7 +178,6 @@ int main() {
     return 0;
 }
 
-
 void setLanguage(char language[])
 {
     char* lang = getenv("LANG");
@@ -188,6 +195,38 @@ void setLanguage(char language[])
         #endif
         strcpy(language, "en");
     }
+}
+
+int checkCall()
+{
+    char* term = getenv("TERM");
+    char* gateway = getenv("GATEWAY_INTERFACE");
+
+    if (term != NULL)
+    {
+        #ifdef DEBUG
+            //printf("Das Programm wurde ueber die Konsole gestartet.\n");
+        #endif
+        //Aufruf ueber die Konsole
+        return 0;
+    }
+    else if (gateway != NULL)
+    {
+        #ifdef DEBUG
+            //printf("Das Programm wurde als CGI-Skript gestartet.\n");
+        #endif
+        //Aufruf als CGI-Script
+        return 1;
+    }
+    else
+    {
+        #ifdef DEBUG
+            //printf("Die Ausfuehrungsumgebung konnte nicht erkannt werden.\n");
+        #endif
+        //Keine Ahnung, wie aufgerufen wurde, also Konsolenausgabe
+        return 0;
+    }
+    return 0;
 }
 
 int getInputConsole(char input[]) {
@@ -235,18 +274,13 @@ int getInputCGI(char input[])
 
     if (query == NULL) return 0;
 
-    printf("Eingegebener Query:</br>%s</br>", query);
-    /*
-    input[7] = '-';
-    input[15] = '-';
-    input[23] = '-';
-    */
-   for(int i = 0; i < 48; i++)
-   {
-    input[i] = '\0';
-   }
+    for(int i = 0; i < 48; i++)
+    {
+        input[i] = '\0';
+    }
    
     sscanf(query, "R1=%7[^&]&R2=%7[^&]&R3=%7[^&]&R4=%7[^&]&R5=%7[^&]&R6=%7s", &input[0], &input[8], &input[16], &input[24], &input[32], &input[40]); 
+    /*
     for(int i = 0; i < 48; i++)
         {
             if(input[i] == '\0')
@@ -259,9 +293,10 @@ int getInputCGI(char input[])
             //if((i + 1) % 8 == 0)printf("</br>");
         }
         printf("</br>");
+    */
     stringToLower(input);
     count = validateHtmlInput(input);
-
+    /*
     for(int i = 0; i < 48; i++)
     {
         if(input[i] == '\0')
@@ -273,7 +308,7 @@ int getInputCGI(char input[])
         //if((i + 1) % 8 == 0)printf("</br>");
     }
     printf("</br>");
-
+    */
     if(count == 0) 
             {   
                 printf("Keine Korrekte Eingabe. </br>");
@@ -810,18 +845,13 @@ void printConsoleResult(float resValue, float tolerance, int tempCoefficient)
 void initHtmlOutput()
 {
     //initialisieren der Web-Oberflaeche
-    printf("Content-type: text/html\n\n");
-    printf("<html>\n");
-    printf("<head>\n");
-    printf("<title>Hallo Welt</title>\n");
-    printf("</head>\n");
-    printf("<body>\n");
-    printf("<h1>Hallo Holger!</h1>\n");
+    printf("Content-Type: text/html\n");   
 }
 
 void printHtmlResult(float resValue, float tolerance, int tempCoefficient)
 {
-    //Ausgabe der HTML-Informationen und des Ergebnisses der Widerstandsberechnung
+    char output[1000] = "http://localhost/result.html?R=";
+    char intStr[10];
     int multiplicator = 0;
     while(resValue > 1000 || resValue < 1)
     {
@@ -837,73 +867,55 @@ void printHtmlResult(float resValue, float tolerance, int tempCoefficient)
         }
     }
 
-    printf("<p>");
-    //Ausgabe des Wiederstandswertes
-    if(strcmp(language, "de")==0)printf("Widerstandswert:");
-    else printf("Resistor Value:");
-    printf("%.3lf", resValue);
+    sprintf(intStr, "%.2lf", resValue);
     
+    strcat(output, intStr);
+
     switch (multiplicator)
     {
         case -1:
-            printf("m");
+            strcat(output, "m");
             break;
         case 0:
             break;
         case 1:
-            printf("k");
+            strcat(output, "k");
             break;
         case 2:
-            printf("M");
+            strcat(output, "M");
             break;
         case 3:
-            printf("G");
+            strcat(output, "G");
             break;
         default:
             break;
     }
+    strcat(output, "&T=");
     
-    printf("Ohm</br>");
-    if(!tolerance)printf("Die Toleranz betraegt 20%% </br>");
-    else printf("Die Toleranz betraegt %.2lf %%</br>", tolerance);
-    if(tempCoefficient)printf("Der Temperaturkoeffizient betraegt %d ppm/K </br>", tempCoefficient);
-    printf("</p>");
+    if(!tolerance)strcat(output,"20");
+    else 
+    {
+        sprintf(intStr, "%.2lf", tolerance);
+        strcat(output, intStr);
+        strcat(output, "&tK=");
+
+    }
+    if(tempCoefficient)
+    {
+        sprintf(intStr, "%d", tempCoefficient);
+        strcat(output, intStr);
+    }else
+    {
+        strcat(output, "0");
+    }
+    printf("Location: %s\n", output);
+    printf("Status: 302 Found\n\n");
+    printf("<html><head><title>Weiterleitung</title></head>\n");
+    printf("<body><h1>Ergebnisse werden berechnet</h1>\n");
 }
 
 void closeHtmlOutput()
 {
     printf("</body>\n");
     printf("</html>\n");
-}
-
-int checkCall()
-{
-    char* term = getenv("TERM");
-    char* gateway = getenv("GATEWAY_INTERFACE");
-
-    if (term != NULL)
-    {
-        #ifdef DEBUG
-            //printf("Das Programm wurde ueber die Konsole gestartet.\n");
-        #endif
-        //Aufruf ueber die Konsole
-        return 0;
-    }
-    else if (gateway != NULL)
-    {
-        #ifdef DEBUG
-            //printf("Das Programm wurde als CGI-Skript gestartet.\n");
-        #endif
-        //Aufruf als CGI-Script
-        return 1;
-    }
-    else
-    {
-        #ifdef DEBUG
-            //printf("Die Ausfuehrungsumgebung konnte nicht erkannt werden.\n");
-        #endif
-        //Keine Ahnung, wie aufgerufen wurde, also Konsolenausgabe
-        return 0;
-    }
-    return 0;
 }
