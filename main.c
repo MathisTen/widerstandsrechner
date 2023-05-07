@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <stdarg.h>
-//#define DEBUG
+#define DEBUG
 
 //Wendet die Spracheinstellungen je nach Anwendersystem an
 void setLanguage(char language[]);
@@ -18,15 +18,6 @@ int getInputCGI(char input[]);
 
 //Wandelt alle Benutzereingaben in Kleinbuchstaben um
 void stringToLower(char s[]);
-
-//Prueft, ob die Eingabe eine Einstellung ist
-int checkForSetting(char input[]);
-
-//Wendet die Einstellung an
-int applySetting(char input[]);
-
-//Zaehlt die eingegebenen Farben
-int countInput(char input[]);
 
 //Prueft den eingegeben String auf die korrekte Syntax und gibt als Rueckgabewert die Anzahl der Farbwoerter zurueck, gibt "FALSE" zurueck, wenn der String nicht korrekt ist
 int validateConsoleInput(char input_string[]);
@@ -192,7 +183,10 @@ void setLanguage(char language[])
         printf("Language: %s\n", language);
         #endif
     } else {
-        printf("Sprache des Anwendersystems nicht gefunden\n");
+        #ifdef DEBUG
+        printf("Sprache des Anwendersystems nicht gefunden, setze auf Englisch\n");
+        #endif
+        strcpy(language, "en");
     }
 }
 
@@ -217,47 +211,16 @@ int getInputConsole(char input[]) {
 
         count = 0;
 
-        //Wenn Eingabe ist Einstellung -> Einstellung aendern
-        if(checkForSetting(input)) 
-        {
-            //Einstellungen aendern ...
-            if(applySetting(input))
-            {                
-                //Gueltige Einstellung
-                if(strcmp(language, "de")==0)
-                {
-                    printf("Einstellungen geaendert.\n");
-                    printf("Bitte geben Sie einen Eingabestring ein: ");
-                }else
-                {
-                    printf("Settings changed.\n");
-                    printf("Please enter an input-string: ");
-                }
-            }else
-            {   
-                //Ungueltige Einstellung
-                if(strcmp(language, "de")==0)
-                {
-                    printf("Keine gueltige Einstellung.\n");
-                    printf("Bitte geben Sie eine gueltige Einstellung oder einen Eingabestring ein: ");
-                }else
-                {
-                    printf("No vaild setting.\n");
-                    printf("Please enter a valid setting or an input-string: ");
-                }
-            }
-        }else
-        {            
-            //Pruefen auf syntaktische Korrektheit und Zaehlen der Farben (0 = Fehler, 3-6 = Anzahl der eingegebenen Farbringe
-            count = validateConsoleInput(input);
+        //Pruefen auf syntaktische Korrektheit und Zaehlen der Farben (0 = Fehler, 3-6 = Anzahl der eingegebenen Farbringe
+        count = validateConsoleInput(input);
 
-            //Wenn fehlerhafte Eingabe, Aufforderung zur Korrektur ausgeben
-            if(count == 0) 
-            {   
-                if(strcmp(language, "de")==0)printf("Ihre Eingabe ist Fehlerhaft, bitte erneut eingeben.\n");
-                else printf("Your input was incorrect, pleas enter a correct input.\n");
-            }
+        //Wenn fehlerhafte Eingabe, Aufforderung zur Korrektur ausgeben
+        if(count == 0) 
+        {   
+            if(strcmp(language, "de")==0)printf("Ihre Eingabe ist Fehlerhaft, bitte erneut eingeben.\n");
+            else printf("Your input was incorrect, pleas enter a correct input.\n");
         }
+        
         //Eingabeabfrage wiederholen, wenn Eingabe fehlerhaft
     }while(count == 0);
 
@@ -325,38 +288,6 @@ void stringToLower(char s[]) {
     for(i = 0; s[i] != '\0'; i++) {
         s[i] = tolower(s[i]);
     }
-}
-
-int checkForSetting(char input[])
-{
-    if(input[0] == '-')return 1;
-    return 0;
-}
-
-int applySetting(char input[])
-{
-    if(input[1] == 'l' && input[2] == 'e' && input[3] == 'n')
-    {
-        if(input[5] == 'd' && input[6] == 'e')
-        {
-            //Sprache in Deutsch geaendert
-            strcpy(language, "de");
-            printf("Sprachauswahl: Deutsch.\n");
-            return 1;
-        }else if (input[5] == 'e' && input[6] == 'n')
-        {
-            //Sprache in Englisch geaendert
-            strcpy(language, "en");
-            printf("Language: english\n");
-            return 1;
-        }
-    }
-    return 0;
-}
-
-int countInput(char input[])
-{
-
 }
 
 int validateConsoleInput(char input[]) {
