@@ -7,6 +7,8 @@
 #include <stdarg.h>
 //#define DEBUG
 
+//Wendet die Spracheinstellungen je nach Anwendersystem an
+void setLanguage(char language[]);
 
 //Benutzeraufforderung zur Eingabe des Farb-String und speichert in input[], gibt die Anzahl der Woerter zurueck
 int getInputConsole(char input[]);
@@ -82,12 +84,17 @@ char language[] = "de";
 
 int main() {
 
+    //Einstellen der Sprache
+    setLanguage(language);
+
     //Abfragen der Aufrufumgebung
     int env = checkCall();
     
     //Wenn als CGI-Script, dann starte HTML-Ausgabe
     if(env) initHtmlOutput();       
+    #ifdef DEBUG
     else printf("Konsole - Start\n");
+    #endif
 
     //Deklarieren der Variable fuer den Input
     char input[48] = "";
@@ -173,6 +180,21 @@ int main() {
 }
 
 
+void setLanguage(char language[])
+{
+    char* lang = getenv("LANG");
+    if (lang != NULL) {
+        
+        language[0] = lang[0];
+        language[1] = lang[1];
+        #ifdef DEBUG
+        printf("Sprache des Anwendersystems: %s\n", lang);
+        printf("Language: %s\n", language);
+        #endif
+    } else {
+        printf("Sprache des Anwendersystems nicht gefunden\n");
+    }
+}
 
 int getInputConsole(char input[]) {
 
