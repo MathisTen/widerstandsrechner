@@ -58,13 +58,13 @@ double toleranceValue(int count, char input[]);
 int temperatureCoefficientValue(char colour[]);
 
 //Gibt die berechneten Werte in der Konsole aus
-void printConsoleResult(float resValue, float tolerance, int tempCoefficient);
+void printConsoleResult(double resValue, double tolerance, int tempCoefficient);
 
 //Initialisert den CGI-Output, um einen Output im Browser zu ermoeglichen
 void initHtmlOutput();
 
 //Gibt den Widerstandswert als HTML aus
-void printHtmlResult(float resValue, float tolerance, int tempCoefficient);
+void printHtmlResult(double resValue, double tolerance, int tempCoefficient);
 
 //Gibt die Fehlermeldung im Browser aus
 void printHtmlError();
@@ -75,7 +75,7 @@ void closeHtmlOutput();
 char language[] = "de"; 
 
 
-int main() {
+int main(void) {
 
     //Einstellen der Sprache
     setLanguage(language);
@@ -311,18 +311,18 @@ int validateConsoleInput(char input[]) {
             return false;
         }
 
-        if(strcmp(token, "schwarz") == 0 || strcmp(token, "black") == 0 || strcmp(token, "bk") == 0 ||
-           strcmp(token, "braun") == 0 || strcmp(token, "brown") == 0 || strcmp(token, "bn") == 0 ||
-           strcmp(token, "rot") == 0 || strcmp(token, "red") == 0 || strcmp(token, "rd") == 0 ||
-           strcmp(token, "orange") == 0 || strcmp(token, "orange") == 0 || strcmp(token, "og") == 0 ||
-           strcmp(token, "gelb") == 0 || strcmp(token, "yellow") == 0 || strcmp(token, "yl") == 0 ||
-           strcmp(token, "gruen") == 0 || strcmp(token, "gruen") == 0 || strcmp(token, "green") == 0 || strcmp(token, "gn") == 0 ||
-           strcmp(token, "blau") == 0 || strcmp(token, "blue") == 0 || strcmp(token, "bu") == 0 ||
-           strcmp(token, "violett") == 0 || strcmp(token, "violet") == 0 || strcmp(token, "vi") == 0 ||
-           strcmp(token, "grau") == 0 || strcmp(token, "grey") == 0 || strcmp(token, "gy") == 0 ||
-           strcmp(token, "weiss") == 0 || strcmp(token, "white") == 0 || strcmp(token, "wh") == 0 ||
-           strcmp(token, "silber") == 0 || strcmp(token, "silver") == 0 || strcmp(token, "sr") == 0 ||
-           strcmp(token, "gold") == 0 || strcmp(token, "au") == 0 )
+        if(strcmp(token, "schwarz") == 0 || strcmp(token, "black") == 0 || strcmp(token, "bk") == 0 || strcmp(token, "sw") == 0 ||
+           strcmp(token, "braun") == 0 || strcmp(token, "brown") == 0 || strcmp(token, "bn") == 0 || strcmp(token, "br") == 0 ||
+           strcmp(token, "rot") == 0 || strcmp(token, "red") == 0 || strcmp(token, "rd") == 0 || strcmp(token, "rt") == 0 ||
+           strcmp(token, "orange") == 0 || strcmp(token, "orange") == 0 || strcmp(token, "og") == 0 || strcmp(token, "or") == 0 ||
+           strcmp(token, "gelb") == 0 || strcmp(token, "yellow") == 0 || strcmp(token, "ye") == 0 || strcmp(token, "ge") == 0 ||
+           strcmp(token, "gruen") == 0 || strcmp(token, "green") == 0 || strcmp(token, "gn") == 0 || 
+           strcmp(token, "blau") == 0 || strcmp(token, "blue") == 0 || strcmp(token, "bu") == 0 || strcmp(token, "bl") == 0 ||
+           strcmp(token, "violett") == 0 || strcmp(token, "violet") == 0 || strcmp(token, "vt") == 0 || strcmp(token, "vi") == 0 ||
+           strcmp(token, "grau") == 0 || strcmp(token, "grey") == 0 || strcmp(token, "gy") == 0 || strcmp(token, "gr") == 0 ||
+           strcmp(token, "weiss") == 0 || strcmp(token, "white") == 0 || strcmp(token, "wh") == 0 || strcmp(token, "ws") == 0 ||
+           strcmp(token, "silber") == 0 || strcmp(token, "silver") == 0 || strcmp(token, "sr") == 0 || strcmp(token, "si") == 0 ||
+           strcmp(token, "gold") == 0 || strcmp(token, "gd") == 0 || strcmp(token, "go") == 0 )
         {
             // Farbe ist gueltig
             #ifdef DEBUG
@@ -486,18 +486,18 @@ void separate(char input[],int count, char colour1[], char colour2[], char colou
 int colourValue(char colour[])
 {
     //ISO Norm fuer Farbabkuerzungen
-    if(strcmp(colour, "schwarz") == 0 || strcmp(colour, "black") == 0 || strcmp(colour, "bk") == 0) return 0;
-    if(strcmp(colour, "braun") == 0 || strcmp(colour, "brown") == 0 || strcmp(colour, "bn") == 0) return 1;
-    if(strcmp(colour, "rot") == 0 || strcmp(colour, "red") == 0 || strcmp(colour, "rd") == 0 ) return 2;
-    if(strcmp(colour, "orange") == 0 || strcmp(colour, "orange") == 0 || strcmp(colour, "og") == 0 ) return 3;
-    if(strcmp(colour, "gelb") == 0 || strcmp(colour, "yellow") == 0 || strcmp(colour, "yl") == 0 )return 4;
+    if(strcmp(colour, "schwarz") == 0 || strcmp(colour, "black") == 0 || strcmp(colour, "bk") == 0 || strcmp(colour, "sw") == 0) return 0;
+    if(strcmp(colour, "braun") == 0 || strcmp(colour, "brown") == 0 || strcmp(colour, "bn") == 0 || strcmp(colour, "br") == 0) return 1;
+    if(strcmp(colour, "rot") == 0 || strcmp(colour, "red") == 0 || strcmp(colour, "rd") == 0  || strcmp(colour, "rt") == 0) return 2;
+    if(strcmp(colour, "orange") == 0 || strcmp(colour, "orange") == 0 || strcmp(colour, "og") == 0 || strcmp(colour, "or") == 0) return 3;
+    if(strcmp(colour, "gelb") == 0 || strcmp(colour, "yellow") == 0 || strcmp(colour, "ye") == 0 || strcmp(colour, "ge" ) == 0) return 4;
     if(strcmp(colour, "gruen") == 0 || strcmp(colour, "green") == 0 || strcmp(colour, "gn") == 0 ) return 5;
-    if(strcmp(colour, "blau") == 0 || strcmp(colour, "blue") == 0 || strcmp(colour, "bu") == 0 ) return 6;
-    if(strcmp(colour, "violett") == 0 || strcmp(colour, "violet") == 0 || strcmp(colour, "vi") == 0 ) return 7;
-    if(strcmp(colour, "grau") == 0 || strcmp(colour, "grey") == 0 || strcmp(colour, "gy") == 0 ) return 8;
-    if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0 ) return 9;
-    if(strcmp(colour, "silber") == 0 || strcmp(colour, "silver") == 0 || strcmp(colour, "sr") == 0 ) return -2;
-    if(strcmp(colour, "gold") == 0 || strcmp(colour, "gd") == 0 ) return -1;
+    if(strcmp(colour, "blau") == 0 || strcmp(colour, "blue") == 0 || strcmp(colour, "bu") == 0 || strcmp(colour, "bl") == 0 ) return 6;
+    if(strcmp(colour, "violett") == 0 || strcmp(colour, "violet") == 0 || strcmp(colour, "vt") == 0 || strcmp(colour, "vi") == 0 ) return 7;
+    if(strcmp(colour, "grau") == 0 || strcmp(colour, "grey") == 0 || strcmp(colour, "gy") == 0 || strcmp(colour, "gr") == 0 ) return 8;
+    if(strcmp(colour, "weiss") == 0 || strcmp(colour, "white") == 0 || strcmp(colour, "wh") == 0 || strcmp(colour, "ws") == 0 ) return 9;
+    if(strcmp(colour, "silber") == 0 || strcmp(colour, "silver") == 0 || strcmp(colour, "sr") == 0 || strcmp(colour, "si") == 0 ) return -2;
+    if(strcmp(colour, "gold") == 0 || strcmp(colour, "go") == 0 ) return -1;
     return 100;
 }
 
@@ -537,7 +537,7 @@ int checkResistorLogic(char input[], int count)
             }
         }
     }
-    return 0;
+    return false;
 }
 
 int checkRing(int count, int number, char colour[]) {
@@ -760,7 +760,7 @@ int temperatureCoefficientValue(char colour[])
 
 }
 
-void printConsoleResult(float resValue, float tolerance, int tempCoefficient)
+void printConsoleResult(double resValue, double tolerance, int tempCoefficient)
 {
     
     int multiplicator = 0;
@@ -808,7 +808,7 @@ void printConsoleResult(float resValue, float tolerance, int tempCoefficient)
     //Ausgabe der Toleranz
     if(strcmp(language, "de")==0)printf("Toleranz:");
     else printf("Tolerance:");
-    printf("%.2f", tolerance);
+    printf("%.2lf", tolerance);
     printf("%%\n");
 
     //Wenn sechs Ringe, dann gib Koeffizienten aus
@@ -821,7 +821,7 @@ void initHtmlOutput()
     printf("Content-Type: text/html\n");   
 }
 
-void printHtmlResult(float resValue, float tolerance, int tempCoefficient)
+void printHtmlResult(double resValue, double tolerance, int tempCoefficient)
 {
     char output[1000] = "http://localhost/result.html?R=";
     char intStr[10];
