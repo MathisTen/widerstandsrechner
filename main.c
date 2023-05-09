@@ -504,40 +504,42 @@ int colourValue(char colour[])
 int checkResistorLogic(char input[], int count)
 {
     //test the first ring on logic
-    if(checkRing(count, 1, &input[0]))
-    {
-        //test the second ring on logic
-        if(checkRing(count, 2, &input[8]))
-        {  
-            //test the third ring on logic
-            if(checkRing(count, 3, &input[16]))
-            {
-                //If more than three rings
-                if(count >3)
-                {
-                    //check the fourth ring on logic
-                    if(checkRing(count, 4, &input[24]))
-                    {
-                        //If more than four rings 
-                        if(count >4)
-                        {   
-                            //check the fifth ring on logic
-                            if(checkRing(count, 5, &input[32]))
-                            {
-                                //If more than five rings
-                                if(count>5)
-                                {
-                                    //check the sixth ring on logic
-                                    if(checkRing(count, 6, &input[40]))return true;
-                                }else return true;
-                            }
-                        }else return true;
-                    }
-                }else return true;
-            }
-        }
-    }
-    return false;
+    if(!checkRing(count, 1, &input[0]))
+        return false;
+
+    //test the second ring on logic
+    if(!checkRing(count, 2, &input[8]))
+        return false;
+
+    //test the third ring on logic
+    if(!checkRing(count, 3, &input[16]))
+        return false;
+
+    //If more than three rings
+    if(count <= 3)
+        return true;
+
+    //check the fourth ring on logic
+    if(!checkRing(count, 4, &input[24]))
+        return false;
+
+    //If more than four rings 
+    if(count <= 4)
+        return true;
+
+    //check the fifth ring on logic
+    if(!checkRing(count, 5, &input[32]))
+        return false;
+
+    //If more than five rings
+    if(count <= 5)
+        return true;
+
+    //check the sixth ring on logic
+    if(!checkRing(count, 6, &input[40]))
+        return false;
+
+    return true;
 }
 
 int checkRing(int count, int number, char colour[]) {
